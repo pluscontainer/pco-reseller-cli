@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -27,8 +26,9 @@ var deleteCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		ctx := context.Background()
+		psOsClient := fetchPsOpenStackClientOrDie()
 
+		ctx := context.Background()
 		err := psOsClient.DeleteProject(ctx, args[0])
 
 		if err != nil {

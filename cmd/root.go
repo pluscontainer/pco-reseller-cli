@@ -12,8 +12,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var psOsClient *psos.PsOpenstackClient
-
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "v2",
@@ -33,7 +31,7 @@ func Execute() {
 	}
 }
 
-func init() {
+func fetchPsOpenStackClientOrDie() *psos.PsOpenstackClient {
 	endpoint := os.Getenv("PSOS_ENDPOINT")
 	if len(strings.TrimSpace(endpoint)) == 0 {
 		fmt.Println("Please define env PSOS_ENDPOINT")
@@ -53,9 +51,11 @@ func init() {
 	}
 
 	var err error
-	psOsClient, err = psos.Login(endpoint, user, password)
+	psOsClient, err := psos.Login(endpoint, user, password)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+
+	return psOsClient
 }

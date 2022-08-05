@@ -30,8 +30,9 @@ var createCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		ctx := context.Background()
+		psOsClient := fetchPsOpenStackClientOrDie()
 
+		ctx := context.Background()
 		enabled := true
 
 		resp, err := psOsClient.CreateProject(ctx, openapi.ProjectCreate{

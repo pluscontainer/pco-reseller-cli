@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -17,8 +16,9 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all projects",
 	Run: func(cmd *cobra.Command, args []string) {
-		ctx := context.Background()
+		psOsClient := fetchPsOpenStackClientOrDie()
 
+		ctx := context.Background()
 		resp, err := psOsClient.GetProjects(ctx)
 		if err != nil {
 			fmt.Println(err.Error())

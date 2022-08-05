@@ -27,8 +27,9 @@ var getCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		ctx := context.Background()
+		psOsClient := fetchPsOpenStackClientOrDie()
 
+		ctx := context.Background()
 		resp, err := psOsClient.GetProject(ctx, args[0])
 		if err != nil {
 			fmt.Println(err.Error())
