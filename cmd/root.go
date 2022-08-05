@@ -15,8 +15,8 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "v2",
-	Short: "Managed OpenStack projects and users",
-	Long:  `Managed OpenStack projects and users`,
+	Short: "Managed OpenStack projects and users as a reseller",
+	Long:  `Managed OpenStack projects and users as a reseller`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
