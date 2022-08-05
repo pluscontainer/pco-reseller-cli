@@ -1,0 +1,1279 @@
+openapi: 3.0.2
+info:
+  title: pco-api-expansion
+  version: 0.1.2
+paths:
+  /api/v1/auth/login/access-token:
+    post:
+      tags:
+        - auth
+      summary: Login Access Token
+      description: OAuth2 compatible token login, get an access token for future requests
+      operationId: login_access_token_api_v1_auth_login_access_token_post
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: >-
+                #/components/schemas/Body_login_access_token_api_v1_auth_login_access_token_post
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/auth/login/test-token:
+    post:
+      tags:
+        - auth
+      summary: Test Token
+      description: Test access token
+      operationId: test_token_api_v1_auth_login_test_token_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultUser'
+      security:
+        - OAuth2PasswordBearer: []
+  /api/v1/project/{project_id}:
+    get:
+      tags:
+        - project
+      summary: Get Project
+      operationId: get_project_api_v1_project__project_id__get
+      parameters:
+        - description: The pluscloud open project id
+          required: true
+          schema:
+            title: Project Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open project id
+          name: project_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse_ProjectCreatedResponse_'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+    put:
+      tags:
+        - project
+      summary: Update Project
+      operationId: update_project_api_v1_project__project_id__put
+      parameters:
+        - description: The pluscloud open project id
+          required: true
+          schema:
+            title: Project Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open project id
+          name: project_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse_ProjectCreatedResponse_'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+    delete:
+      tags:
+        - project
+      summary: Delete Project
+      operationId: delete_project_api_v1_project__project_id__delete
+      parameters:
+        - description: The pluscloud open project id
+          required: true
+          schema:
+            title: Project Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open project id
+          name: project_id
+          in: path
+      responses:
+        '204':
+          description: Successful Response
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+  /api/v1/project/:
+    get:
+      tags:
+        - project
+      summary: List Projects
+      operationId: list_projects_api_v1_project__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAPIResponse_ProjectCreatedResponse_'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - project
+      summary: Create Project
+      operationId: create_project_api_v1_project__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse_ProjectCreatedResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+  /api/v1/project/{project_id}/user:
+    get:
+      tags:
+        - project
+      summary: Get User For Project
+      operationId: get_user_for_project_api_v1_project__project_id__user_get
+      parameters:
+        - description: The pluscloud open project id
+          required: true
+          schema:
+            title: Project Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open project id
+          name: project_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAPIResponse_ProjectUser_'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+  /api/v1/project/{project_id}/user/{user_id}:
+    post:
+      tags:
+        - project
+      summary: Add User To Project
+      operationId: add_user_to_project_api_v1_project__project_id__user__user_id__post
+      parameters:
+        - description: The pluscloud open project id
+          required: true
+          schema:
+            title: Project Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open project id
+          name: project_id
+          in: path
+        - description: The pluscloud open user id
+          required: true
+          schema:
+            title: User Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open user id
+          name: user_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+    delete:
+      tags:
+        - project
+      summary: Remove User From Project
+      operationId: >-
+        remove_user_from_project_api_v1_project__project_id__user__user_id__delete
+      parameters:
+        - description: The pluscloud open project id
+          required: true
+          schema:
+            title: Project Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open project id
+          name: project_id
+          in: path
+        - description: The pluscloud open user id
+          required: true
+          schema:
+            title: User Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open user id
+          name: user_id
+          in: path
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+  /api/v1/project/{project_id}/quota:
+    get:
+      tags:
+        - project
+      summary: Get Quota
+      operationId: get_quota_api_v1_project__project_id__quota_get
+      parameters:
+        - description: The pluscloud open project id
+          required: true
+          schema:
+            title: Project Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open project id
+          name: project_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse_UpdateQuota_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    put:
+      tags:
+        - project
+      summary: Update Quota
+      operationId: update_quota_api_v1_project__project_id__quota_put
+      parameters:
+        - description: The pluscloud open project id
+          required: true
+          schema:
+            title: Project Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open project id
+          name: project_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuota'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse_UpdateQuota_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+  /api/v1/user/{user_id}:
+    get:
+      tags:
+        - user
+      summary: Get User
+      operationId: get_user_api_v1_user__user_id__get
+      parameters:
+        - description: The pluscloud open user id
+          required: true
+          schema:
+            title: User Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open user id
+          name: user_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse_CreatedOpenStackUser_'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+    put:
+      tags:
+        - user
+      summary: Update User
+      operationId: update_user_api_v1_user__user_id__put
+      parameters:
+        - description: The pluscloud open user id
+          required: true
+          schema:
+            title: User Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open user id
+          name: user_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOpenStackUser'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse_CreatedOpenStackUser_'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+    delete:
+      tags:
+        - user
+      summary: Delete User
+      operationId: delete_user_api_v1_user__user_id__delete
+      parameters:
+        - description: The pluscloud open user id
+          required: true
+          schema:
+            title: User Id
+            maxLength: 32
+            minLength: 32
+            pattern: ^[a-f0-9]+$
+            type: string
+            description: The pluscloud open user id
+          name: user_id
+          in: path
+      responses:
+        '204':
+          description: Successful Response
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+  /api/v1/user/:
+    get:
+      tags:
+        - user
+      summary: List Users
+      operationId: list_users_api_v1_user__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAPIResponse_CreatedOpenStackUser_'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - user
+      summary: Create User
+      description: >
+
+        ---
+
+        __Markdown Test__
+
+
+        - __[pica](https://nodeca.github.io/pica/demo/)__ - high quality and
+        fast image
+          resize in browser.
+        - __[babelfish](https://github.com/nodeca/babelfish/)__ - developer
+        friendly
+          i18n with plurals support and easy syntax.
+
+        You will like those projects!
+
+
+        ## Tables
+
+
+        | Option | Description |
+
+        | ------ | ----------- |
+
+        | data   | path to data files to supply the data that will be passed
+        into templates. |
+
+        | engine | engine to be used for processing templates. Handlebars is the
+        default. |
+
+        | ext    | extension to be used for dest files. |
+
+
+        ---
+      operationId: create_user_api_v1_user__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOpenStackUser'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse_CreatedOpenStackUser_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleAPIResponse'
+      security:
+        - OAuth2PasswordBearer: []
+components:
+  schemas:
+    BaseModel:
+      title: BaseModel
+      type: object
+      properties: {}
+    Body_login_access_token_api_v1_auth_login_access_token_post:
+      title: Body_login_access_token_api_v1_auth_login_access_token_post
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        grant_type:
+          title: Grant Type
+          pattern: password
+          type: string
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+        scope:
+          title: Scope
+          type: string
+          default: ''
+        client_id:
+          title: Client Id
+          type: string
+        client_secret:
+          title: Client Secret
+          type: string
+    ComputeQuotas:
+      title: ComputeQuotas
+      required:
+        - instances
+        - key_pairs
+        - metadata_items
+        - server_groups
+      type: object
+      properties:
+        cores:
+          title: Cores
+          maximum: 500
+          minimum: 0
+          type: integer
+          description: Number of cores between 0 and 500
+          default: 40
+        fixed_ips:
+          title: Fixed Ips
+          minimum: -1
+          type: integer
+          default: -1
+        floating_ips:
+          title: Floating Ips
+          maximum: 100
+          minimum: -1
+          type: integer
+          description: The number of allowed floating IP addresses for each project
+          default: -1
+        injected_file_content_bytes:
+          title: Injected File Content Bytes
+          minimum: 0
+          type: integer
+          default: 10240
+        injected_file_path_bytes:
+          title: Injected File Path Bytes
+          minimum: 0
+          type: integer
+          default: 255
+        injected_files:
+          title: Injected Files
+          minimum: 0
+          type: integer
+          default: 5
+        instances:
+          title: Instances
+          minimum: 0
+          type: integer
+        key_pairs:
+          title: Key Pairs
+          minimum: 0
+          type: integer
+        metadata_items:
+          title: Metadata Items
+          minimum: 0
+          type: integer
+        ram:
+          title: Ram
+          maximum: 1907348.6328125
+          minimum: 0
+          type: integer
+          description: Maximum amount of RAM in MiB
+          default: 51200
+        security_group_rules:
+          title: Security Group Rules
+          minimum: -1
+          type: integer
+          default: -1
+        security_groups:
+          title: Security Groups
+          minimum: -1
+          type: integer
+          default: -1
+        server_group_members:
+          title: Server Group Members
+          minimum: 0
+          type: integer
+          default: 10
+        server_groups:
+          title: Server Groups
+          minimum: 0
+          type: integer
+    CreateOpenStackUser:
+      title: CreateOpenStackUser
+      required:
+        - name
+        - description
+        - password
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+          description: E-Mail to login into the pluscloud open
+          format: email
+        default_project:
+          title: Default Project
+          maxLength: 32
+          minLength: 32
+          pattern: ^[a-f0-9]+$
+          type: string
+          description: Option to set the users default project via the project id
+        enabled:
+          title: Enabled
+          type: boolean
+          default: true
+        description:
+          title: Description
+          maxLength: 254
+          pattern: '^[\w-]+(?: +[\w-]+)*$'
+          type: string
+          description: Description of the pluscloud open user
+        password:
+          title: Password
+          maxLength: 254
+          type: string
+    CreatedOpenStackUser:
+      title: CreatedOpenStackUser
+      required:
+        - name
+        - description
+        - id
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+          description: E-Mail to login into the pluscloud open
+          format: email
+        default_project:
+          title: Default Project
+          maxLength: 32
+          minLength: 32
+          pattern: ^[a-f0-9]+$
+          type: string
+          description: Option to set the users default project via the project id
+        enabled:
+          title: Enabled
+          type: boolean
+          default: true
+        description:
+          title: Description
+          maxLength: 254
+          pattern: '^[\w-]+(?: +[\w-]+)*$'
+          type: string
+          description: Description of the pluscloud open user
+        id:
+          title: Id
+          type: string
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    ListAPIResponse_CreatedOpenStackUser_:
+      title: ListAPIResponse[CreatedOpenStackUser]
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          title: Status
+          type: integer
+        data:
+          title: Data
+          type: array
+          items:
+            $ref: '#/components/schemas/CreatedOpenStackUser'
+        message:
+          title: Message
+          type: string
+    ListAPIResponse_ProjectCreatedResponse_:
+      title: ListAPIResponse[ProjectCreatedResponse]
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          title: Status
+          type: integer
+        data:
+          title: Data
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectCreatedResponse'
+        message:
+          title: Message
+          type: string
+    ListAPIResponse_ProjectUser_:
+      title: ListAPIResponse[ProjectUser]
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          title: Status
+          type: integer
+        data:
+          title: Data
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectUser'
+        message:
+          title: Message
+          type: string
+    NetworkQuotas:
+      title: NetworkQuotas
+      required:
+        - network
+        - subnet
+        - router
+        - security_group
+        - security_group_rule
+      type: object
+      properties:
+        network:
+          title: Network
+          minimum: 0
+          type: integer
+        subnet:
+          title: Subnet
+          minimum: 0
+          type: integer
+        subnetpool:
+          title: Subnetpool
+          minimum: -1
+          type: integer
+          default: -1
+        port:
+          title: Port
+          minimum: 0
+          type: integer
+          default: 500
+        router:
+          title: Router
+          minimum: 0
+          type: integer
+        floatingip:
+          title: Floatingip
+          maximum: 100
+          minimum: -1
+          type: integer
+          description: >-
+            The number of floating IP addresses allowed for each project.A value
+            of -1 means no limit
+          default: 8
+        rbac_policy:
+          title: Rbac Policy
+          minimum: 0
+          type: integer
+          description: >-
+            The number of role-based access control (RBAC) policies for each
+            project
+          default: 10
+        security_group:
+          title: Security Group
+          minimum: 0
+          type: integer
+        security_group_rule:
+          title: Security Group Rule
+          minimum: 0
+          type: integer
+    ProjectCreate:
+      title: ProjectCreate
+      required:
+        - name
+        - description
+      type: object
+      properties:
+        name:
+          title: Name
+          pattern: ^(?:\w|-)+$
+          type: string
+          description: >-
+            Name of the pluscloud open project. A customer related prefix will
+            be automatically appended
+        description:
+          title: Description
+          maxLength: 254
+          pattern: '^[\w-]+(?: +[\w-]+)*$'
+          type: string
+          description: Description of the pluscloud open project
+        enabled:
+          title: Enabled
+          type: boolean
+          description: Enables or disables the pluscloud open project
+          default: true
+        network_preconfigure:
+          title: Network Preconfigure
+          type: boolean
+          description: >-
+            Preconfigures the pluscloudopen project with a ready to work
+            environment by automatically supplying one router,subnet,network and
+            secgroups
+          default: false
+    ProjectCreatedResponse:
+      title: ProjectCreatedResponse
+      required:
+        - name
+        - description
+        - id
+      type: object
+      properties:
+        name:
+          title: Name
+          pattern: ^(?:\w|-)+$
+          type: string
+          description: >-
+            Name of the pluscloud open project. A customer related prefix will
+            be automatically appended
+        description:
+          title: Description
+          maxLength: 254
+          pattern: '^[\w-]+(?: +[\w-]+)*$'
+          type: string
+          description: Description of the pluscloud open project
+        enabled:
+          title: Enabled
+          type: boolean
+          description: Enables or disables the pluscloud open project
+          default: true
+        id:
+          title: Id
+          maxLength: 32
+          minLength: 32
+          pattern: ^[a-f0-9]+$
+          type: string
+          description: The pluscloud open project id
+    ProjectUpdate:
+      title: ProjectUpdate
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        enabled:
+          title: Enabled
+          type: boolean
+    ProjectUser:
+      title: ProjectUser
+      required:
+        - project
+        - user
+      type: object
+      properties:
+        project:
+          title: Project
+          maxLength: 32
+          minLength: 32
+          pattern: ^[a-f0-9]+$
+          type: string
+          description: The pluscloud open project id
+        user:
+          title: User
+          maxLength: 32
+          minLength: 32
+          pattern: ^[a-f0-9]+$
+          type: string
+          description: The pluscloud open user id
+    SingleAPIResponse:
+      title: SingleAPIResponse
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          title: Status
+          type: integer
+        data:
+          $ref: '#/components/schemas/BaseModel'
+        message:
+          title: Message
+          type: string
+    SingleAPIResponse_CreatedOpenStackUser_:
+      title: SingleAPIResponse[CreatedOpenStackUser]
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          title: Status
+          type: integer
+        data:
+          $ref: '#/components/schemas/CreatedOpenStackUser'
+        message:
+          title: Message
+          type: string
+    SingleAPIResponse_ProjectCreatedResponse_:
+      title: SingleAPIResponse[ProjectCreatedResponse]
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          title: Status
+          type: integer
+        data:
+          $ref: '#/components/schemas/ProjectCreatedResponse'
+        message:
+          title: Message
+          type: string
+    SingleAPIResponse_UpdateQuota_:
+      title: SingleAPIResponse[UpdateQuota]
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          title: Status
+          type: integer
+        data:
+          $ref: '#/components/schemas/UpdateQuota'
+        message:
+          title: Message
+          type: string
+    Token:
+      title: Token
+      required:
+        - access_token
+        - token_type
+      type: object
+      properties:
+        access_token:
+          title: Access Token
+          type: string
+        token_type:
+          title: Token Type
+          type: string
+    UpdateOpenStackUser:
+      title: UpdateOpenStackUser
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+          description: E-Mail to login into the pluscloud open
+          format: email
+        default_project:
+          title: Default Project
+          maxLength: 32
+          minLength: 32
+          pattern: ^[a-f0-9]+$
+          type: string
+          description: Option to set the users default project via the project id
+        enabled:
+          title: Enabled
+          type: boolean
+          default: true
+        description:
+          title: Description
+          maxLength: 254
+          pattern: '^[\w-]+(?: +[\w-]+)*$'
+          type: string
+          description: Description of the pluscloud open user
+        password:
+          title: Password
+          maxLength: 254
+          type: string
+    UpdateQuota:
+      title: UpdateQuota
+      type: object
+      properties:
+        compute:
+          $ref: '#/components/schemas/ComputeQuotas'
+        volume:
+          $ref: '#/components/schemas/VolumeQuotas'
+        network:
+          $ref: '#/components/schemas/NetworkQuotas'
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            type: string
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+    VaultUser:
+      title: VaultUser
+      required:
+        - domain_id
+        - project_prefix
+        - username
+      type: object
+      properties:
+        domain_id:
+          title: Domain Id
+          type: string
+        project_prefix:
+          title: Project Prefix
+          type: string
+        username:
+          title: Username
+          anyOf:
+            - type: string
+              format: email
+            - type: string
+    VolumeQuotas:
+      title: VolumeQuotas
+      required:
+        - volumes
+        - backups
+        - backup_gigabytes
+      type: object
+      properties:
+        volumes:
+          title: Volumes
+          minimum: 0
+          type: integer
+        per_volume_gigabytes:
+          title: Per Volume Gigabytes
+          minimum: -1
+          type: integer
+          default: -1
+        snapshots:
+          title: Snapshots
+          maximum: 100
+          minimum: 0
+          type: integer
+          description: Maximum amount of snapshots
+          default: 50
+        gigabytes:
+          title: Gigabytes
+          maximum: 35000
+          minimum: 0
+          type: integer
+          description: Maximum amount of available Storage
+          default: 2000
+        backups:
+          title: Backups
+          minimum: 0
+          type: integer
+        backup_gigabytes:
+          title: Backup Gigabytes
+          minimum: 0
+          type: integer
+        groups:
+          title: Groups
+          minimum: 0
+          type: integer
+          default: 10
+  securitySchemes:
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: /api/v1/auth/login/access-token

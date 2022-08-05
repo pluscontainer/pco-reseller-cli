@@ -1,0 +1,6 @@
+package: psos
+generate:
+  types: true
+  client: true
+  models: true
+output: openapi.gen.go

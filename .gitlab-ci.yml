@@ -1,0 +1,8 @@
+stages:
+  - image-build
+
+
+include:
+  - local: "cicd/build.yml"
+  - project: mk/ci-templates
+    file: pre-commit.yml

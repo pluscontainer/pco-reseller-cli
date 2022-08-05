@@ -1,0 +1,20 @@
+variables:
+  TAG_LATEST: public-cloud-docker-general.psmanaged.com/plusserver/ps-openstack-client:latest
+
+.var-base:
+  before_script:
+    - export TAG_GIT="public-cloud-docker-general.psmanaged.com/plusserver/ps-openstack-client:$( echo $CI_COMMIT_REF_NAME | tr '/' '-' )"
+
+Build Image:
+  stage: image-build
+  extends: .var-base
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - mkdir /root
+    - echo "${CI_COMMIT_TAG}"
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"public-cloud-docker-general.psmanaged.com\":{\"auth\":\"$(echo -n ${NEXUS_USERNAME}:${NEXUS_PASSWORD} | base64)\"}}}" > /kaniko/.docker/config.json
+    - if [[ "${CI_COMMIT_TAG}" == "" ]]; then /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $TAG_GIT; fi
+    - if [[ "${CI_COMMIT_TAG}" != "" ]]; then /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $TAG_GIT --destination $TAG_LATEST; fi
