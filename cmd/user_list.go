@@ -12,40 +12,35 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// addCmd represents the add command
-var projectUserDeleteCmd = &cobra.Command{
-	Use:   "delete",
-	Short: "Delete a user from a specific project",
-	Long:  `Delete a user from a specific project`,
+// listCmd represents the list command
+var userListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "List all users assigned to the reseller account",
+	Long:  `List all users assigned to the reseller account`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) != 2 {
-			fmt.Println("Please specify the id of the project and the user")
-			os.Exit(1)
-		}
-
 		psOsClient := fetchPsOpenStackClientOrDie()
 
 		ctx := context.Background()
-		err := psOsClient.RemoveUserFromProject(ctx, args[0], args[1])
+		resp, err := psOsClient.GetUsers(ctx)
 		if err != nil {
 			fmt.Println(err.Error())
 			os.Exit(1)
 		}
 
-		fmt.Println("User removed from project")
+		printUsers(*resp)
 	},
 }
 
 func init() {
-	projectUserCmd.AddCommand(projectUserDeleteCmd)
+	userCmd.AddCommand(userListCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// addCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

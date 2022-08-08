@@ -37,7 +37,7 @@ var projectUserAddCmd = &cobra.Command{
 }
 
 func init() {
-	userCmd.AddCommand(projectUserAddCmd)
+	projectUserCmd.AddCommand(projectUserAddCmd)
 
 	// Here you will define your flags and configuration settings.
 

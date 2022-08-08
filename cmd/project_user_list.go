@@ -49,5 +49,5 @@ var projectUserListCmd = &cobra.Command{
 }
 
 func init() {
-	userCmd.AddCommand(projectUserListCmd)
+	projectUserCmd.AddCommand(projectUserListCmd)
 }

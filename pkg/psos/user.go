@@ -23,7 +23,7 @@ func (client PsOpenstackClient) GetUser(ctx context.Context, userID string) (*op
 	return resp.JSON200.Data, nil
 }
 
-func (client PsOpenstackClient) GetUsers(ctx context.Context, userID string) (*[]openapi.CreatedOpenStackUser, error) {
+func (client PsOpenstackClient) GetUsers(ctx context.Context) (*[]openapi.CreatedOpenStackUser, error) {
 	resp, err := client.openapiClient.ListUsersApiV1UserGetWithResponse(ctx, client.authorizedRequest)
 	if err != nil {
 		return nil, err

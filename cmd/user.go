@@ -9,14 +9,14 @@ import (
 )
 
 // userCmd represents the user command
-var projectUserCmd = &cobra.Command{
+var userCmd = &cobra.Command{
 	Use:   "user",
-	Short: "Manage users accessing projects",
-	Long:  `List, assign or revoke access to OpenStack projects`,
+	Short: "Manage users",
+	Long:  `Get, create, update, delete users`,
 }
 
 func init() {
-	projectCmd.AddCommand(projectUserCmd)
+	rootCmd.AddCommand(userCmd)
 
 	// Here you will define your flags and configuration settings.
 
