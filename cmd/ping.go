@@ -12,7 +12,7 @@ import (
 // pingCmd represents the ping command
 var pingCmd = &cobra.Command{
 	Use:   "ping",
-	Short: "Check API Availabilitys",
+	Short: "Check API Availability",
 	Long: `Check if the current configuration is correct and the corresponding API is available.
 Exits with code != 0 if an error occurs.`,
 	Run: func(cmd *cobra.Command, args []string) {
