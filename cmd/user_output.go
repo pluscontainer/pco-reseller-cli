@@ -3,8 +3,8 @@ package cmd
 import (
 	"os"
 
-	"github.com/Wieneo/pco-reseller-cli/v2/pkg/openapi"
 	"github.com/jedib0t/go-pretty/table"
+	"github.com/plusserver/pluscloudopen-reseller-cli/v2/pkg/openapi"
 )
 
 func printUsers(users []openapi.CreatedOpenStackUser) {

@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -9,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Wieneo/pco-reseller-cli/v2/pkg/openapi"
+	"github.com/plusserver/pluscloudopen-reseller-cli/v2/pkg/openapi"
 	"github.com/spf13/cobra"
 )
 

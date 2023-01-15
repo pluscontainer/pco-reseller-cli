@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/Wieneo/pco-reseller-cli/v2/pkg/openapi"
+	"github.com/plusserver/pluscloudopen-reseller-cli/v2/pkg/openapi"
 )
 
 func Login(endpoint, username, password string) (*PsOpenstackClient, error) {

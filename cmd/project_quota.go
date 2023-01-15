@@ -1,14 +1,13 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"fmt"
 
-	"github.com/Wieneo/pco-reseller-cli/v2/pkg/openapi"
 	"github.com/jedib0t/go-pretty/list"
+	"github.com/plusserver/pluscloudopen-reseller-cli/v2/pkg/openapi"
 	"github.com/spf13/cobra"
 )
 
