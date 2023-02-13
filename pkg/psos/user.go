@@ -33,6 +33,10 @@ func (client PsOpenstackClient) GetUsers(ctx context.Context) (*[]openapi.Create
 		return nil, fmt.Errorf("invalid response while retrieving projects: %s", string(resp.Body))
 	}
 
+	if resp.JSON200.Data == nil {
+		resp.JSON200.Data = &[]openapi.CreatedOpenStackUser{}
+	}
+
 	return resp.JSON200.Data, nil
 }
 

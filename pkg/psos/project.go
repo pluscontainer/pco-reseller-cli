@@ -18,6 +18,10 @@ func (client PsOpenstackClient) GetProjects(ctx context.Context) (*[]openapi.Pro
 		return nil, fmt.Errorf("invalid response while retrieving projects: %s", string(resp.Body))
 	}
 
+	if resp.JSON200.Data == nil {
+		resp.JSON200.Data = &[]openapi.ProjectCreatedResponse{}
+	}
+
 	return resp.JSON200.Data, nil
 }
 
