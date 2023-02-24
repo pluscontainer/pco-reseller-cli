@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 PlusServer GmbH
 */
 package cmd
 
@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/plusserver/pluscloudopen-reseller-cli/v2/pkg/psos"
+	"github.com/pluscloudopen/reseller-cli/v2/pkg/psos"
 	"github.com/spf13/cobra"
 )
 

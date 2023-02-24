@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 PlusServer GmbH
 */
 package cmd
 
@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/jedib0t/go-pretty/list"
-	"github.com/plusserver/pluscloudopen-reseller-cli/v2/pkg/openapi"
+	"github.com/pluscloudopen/reseller-cli/v2/pkg/openapi"
 	"github.com/spf13/cobra"
 )
 

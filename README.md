@@ -1,1 +1,1 @@
-# pco-reseller-cli
+# pluscloudopen reseller-cli
