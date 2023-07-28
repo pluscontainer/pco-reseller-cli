@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/deepmap/oapi-codegen/pkg/types"
 	"github.com/pluscloudopen/reseller-cli/v2/pkg/openapi"
 	"github.com/spf13/cobra"
 )
@@ -36,7 +35,7 @@ var userCreateCmd = &cobra.Command{
 		enabled := true
 
 		resp, err := psOsClient.CreateUser(ctx, openapi.CreateOpenStackUser{
-			Name:           types.Email(args[0]),
+			Name:           args[0],
 			Description:    userDescription,
 			Enabled:        &enabled,
 			DefaultProject: &userDefaultProject,

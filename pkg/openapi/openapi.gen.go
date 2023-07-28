@@ -15,7 +15,6 @@ import (
 	"strings"
 
 	"github.com/deepmap/oapi-codegen/pkg/runtime"
-	openapi_types "github.com/deepmap/oapi-codegen/pkg/types"
 )
 
 const (
@@ -68,7 +67,7 @@ type CreateOpenStackUser struct {
 	Enabled     *bool  `json:"enabled,omitempty"`
 
 	// E-Mail to login into the pluscloud open
-	Name     openapi_types.Email `json:"name"`
+	Name     string `json:"name"`
 	Password string              `json:"password"`
 }
 
@@ -83,7 +82,7 @@ type CreatedOpenStackUser struct {
 	Id          string `json:"id"`
 
 	// E-Mail to login into the pluscloud open
-	Name openapi_types.Email `json:"name"`
+	Name string `json:"name"`
 }
 
 // HTTPValidationError defines model for HTTPValidationError.
@@ -218,7 +217,7 @@ type UpdateOpenStackUser struct {
 	Enabled     *bool   `json:"enabled,omitempty"`
 
 	// E-Mail to login into the pluscloud open
-	Name     *openapi_types.Email `json:"name,omitempty"`
+	Name     *string `json:"name,omitempty"`
 	Password *string              `json:"password,omitempty"`
 }
 
@@ -1954,6 +1953,7 @@ func (c *ClientWithResponses) ListUsersApiV1UserGetWithResponse(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
+
 	return ParseListUsersApiV1UserGetResponse(rsp)
 }
 
@@ -2494,6 +2494,7 @@ func ParseListUsersApiV1UserGetResponse(rsp *http.Response) (*ListUsersApiV1User
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
+
 		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
