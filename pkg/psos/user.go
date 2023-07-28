@@ -17,7 +17,7 @@ func (client PsOpenstackClient) GetUser(ctx context.Context, userID string) (*op
 		if resp.StatusCode() == 404 {
 			return nil, ErrNotFound
 		}
-		return nil, fmt.Errorf("invalid response while retrieving projects: %s", string(resp.Body))
+		return nil, fmt.Errorf("invalid response while retrieving users: %s", string(resp.Body))
 	}
 
 	return resp.JSON200.Data, nil
@@ -30,7 +30,7 @@ func (client PsOpenstackClient) GetUsers(ctx context.Context) (*[]openapi.Create
 	}
 
 	if resp.StatusCode() != 200 {
-		return nil, fmt.Errorf("invalid response while retrieving projects: %s", string(resp.Body))
+		return nil, fmt.Errorf("invalid response while retrieving users: %s", string(resp.Body))
 	}
 
 	if resp.JSON200.Data == nil {
@@ -47,7 +47,7 @@ func (client PsOpenstackClient) CreateUser(ctx context.Context, params openapi.C
 	}
 
 	if resp.StatusCode() != 201 {
-		return nil, fmt.Errorf("invalid response while retrieving projects: %s", string(resp.Body))
+		return nil, fmt.Errorf("invalid response while retrieving users: %s", string(resp.Body))
 	}
 
 	return resp.JSON201.Data, nil
@@ -65,7 +65,7 @@ func (client PsOpenstackClient) UpdateUser(ctx context.Context, userID string, p
 	}
 
 	if resp.StatusCode() != 200 {
-		return nil, fmt.Errorf("invalid response while retrieving projects: %s", string(resp.Body))
+		return nil, fmt.Errorf("invalid response while retrieving users: %s", string(resp.Body))
 	}
 
 	return resp.JSON200.Data, nil
@@ -83,7 +83,7 @@ func (client PsOpenstackClient) DeleteUser(ctx context.Context, userID string) e
 	}
 
 	if resp.StatusCode() != 204 {
-		return fmt.Errorf("invalid response while retrieving projects: %s", string(resp.Body))
+		return fmt.Errorf("invalid response while retrieving users: %s", string(resp.Body))
 	}
 
 	return nil
