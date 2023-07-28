@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/deepmap/oapi-codegen/pkg/types"
 	"github.com/pluscloudopen/reseller-cli/v2/pkg/openapi"
 	"github.com/spf13/cobra"
 )
@@ -64,10 +63,8 @@ var userUpdateCmd = &cobra.Command{
 			isUserEnabled = false
 		}
 
-		email := types.Email(updateUserName)
-
 		resp, err = psOsClient.UpdateUser(ctx, args[0], openapi.UpdateOpenStackUser{
-			Name:           &email,
+			Name:           &updateUserName,
 			Description:    &updateUserDescription,
 			DefaultProject: &updateUserDefaultProject,
 			Password:       &updateUserPassword,
