@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/table"
-	"github.com/pluscloudopen/reseller-cli/v2/pkg/openapi"
+	"github.com/pluscontainer/reseller-cli/pkg/openapi"
 )
 
 func printProjects(projects []openapi.ProjectCreatedResponse) {

@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/pluscloudopen/reseller-cli/v2/pkg/openapi"
+	"github.com/pluscontainer/reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
 )
 

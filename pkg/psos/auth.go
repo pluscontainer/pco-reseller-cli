@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/pluscloudopen/reseller-cli/v2/pkg/openapi"
+	"github.com/pluscontainer/reseller-cli/pkg/openapi"
 )
 
 func Login(endpoint, username, password string) (*PsOpenstackClient, error) {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/pluscloudopen/reseller-cli/v2/pkg/openapi"
+	"github.com/pluscontainer/reseller-cli/pkg/openapi"
 )
 
 func (client PsOpenstackClient) GetProjects(ctx context.Context) (*[]openapi.ProjectCreatedResponse, error) {
