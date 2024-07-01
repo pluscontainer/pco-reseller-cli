@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/pluscontainer/pco-eseller-cli/pkg/openapi"
+	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
 )
 

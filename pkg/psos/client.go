@@ -1,6 +1,6 @@
 package psos
 
-import "github.com/pluscontainer/pco-eseller-cli/pkg/openapi"
+import "github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 
 type PsOpenstackClient struct {
 	openapiClient *openapi.ClientWithResponses
