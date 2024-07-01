@@ -1,4 +1,4 @@
-module github.com/pluscloudopen/reseller-cli/v2
+module github.com/pluscontainer/reseller-cli
 
 go 1.18
 
