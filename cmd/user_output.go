@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/table"
-	"github.com/pluscontainer/reseller-cli/pkg/openapi"
+	"github.com/pluscontainer/pco-eseller-cli/pkg/openapi"
 )
 
 func printUsers(users []openapi.CreatedOpenStackUser) {
