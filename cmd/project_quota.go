@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/jedib0t/go-pretty/list"
-	"github.com/pluscontainer/reseller-cli/pkg/openapi"
+	"github.com/pluscontainer/pco-eseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
 )
 
