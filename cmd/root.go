@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/pluscloudopen/reseller-cli/v2/pkg/psos"
+	"github.com/pluscontainer/reseller-cli/pkg/psos"
 	"github.com/spf13/cobra"
 )
 

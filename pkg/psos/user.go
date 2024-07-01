@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/pluscloudopen/reseller-cli/v2/pkg/openapi"
+	"github.com/pluscontainer/reseller-cli/pkg/openapi"
 )
 
 func (client PsOpenstackClient) GetUser(ctx context.Context, userID string) (*openapi.CreatedOpenStackUser, error) {
