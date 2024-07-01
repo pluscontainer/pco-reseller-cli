@@ -1,4 +1,4 @@
-module github.com/pluscontainer/pco-eseller-cli
+module github.com/pluscontainer/pco-reseller-cli
 
 go 1.18
 
