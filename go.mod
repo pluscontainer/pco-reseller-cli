@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/deepmap/oapi-codegen v1.13.0
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.1
 )
 
 require (
