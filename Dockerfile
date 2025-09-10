@@ -1,4 +1,4 @@
-FROM golang:1.20 AS build
+FROM golang:1.25 AS build
 RUN mkdir /src
 COPY ./ /src/
 WORKDIR /src
