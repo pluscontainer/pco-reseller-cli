@@ -1,6 +1,6 @@
 module github.com/pluscontainer/pco-reseller-cli
 
-go 1.18
+go 1.25
 
 require (
 	github.com/deepmap/oapi-codegen v1.16.3
