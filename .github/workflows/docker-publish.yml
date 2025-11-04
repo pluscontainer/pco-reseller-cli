@@ -58,7 +58,7 @@ jobs:
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
         id: meta
-        uses: docker/metadata-action@032a4b3bda1b716928481836ac5bfe36e1feaad6
+        uses: docker/metadata-action@aa0be5b84c60897a7e5e1fe2319226e42ee80eca
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
