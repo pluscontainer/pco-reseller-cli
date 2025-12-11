@@ -3,7 +3,7 @@ module github.com/pluscontainer/pco-reseller-cli
 go 1.25
 
 require (
-	github.com/deepmap/oapi-codegen v1.16.3
+	github.com/deepmap/oapi-codegen/v2 v2.5.1
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
 	github.com/spf13/cobra v1.10.1
 )
