@@ -4,7 +4,7 @@ COPY ./ /src/
 WORKDIR /src
 RUN go build -o /ps-openstack-client .
 
-FROM ubuntu:noble@sha256:59a458b76b4e8896031cd559576eac7d6cb53a69b38ba819fb26518536368d86
+FROM ubuntu:noble@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b
 RUN mkdir /app
 RUN apt update
 RUN apt install -y ca-certificates
