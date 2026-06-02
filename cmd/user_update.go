@@ -22,12 +22,11 @@ var userUpdateCmd = &cobra.Command{
 	Short: "Update a reseller user",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			fmt.Println("Please specify the id of the user")
-			os.Exit(1)
+			cmd.Help()
 		}
 
 		if len(args) > 1 {
-			fmt.Println("Please only specify the id of the user")
+			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one user ID")
 			os.Exit(1)
 		}
 

@@ -19,8 +19,7 @@ var projectUserAddCmd = &cobra.Command{
 	Long:  `Add a user to a specific project`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) != 2 {
-			fmt.Println("Please specify the id of the project and the user")
-			os.Exit(1)
+			cmd.Help()
 		}
 
 		psOsClient := fetchPsOpenStackClientOrDie()

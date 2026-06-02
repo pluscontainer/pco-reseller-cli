@@ -22,12 +22,11 @@ var updateCmd = &cobra.Command{
 	Short: "Updated a projects name, description or enablement",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			fmt.Println("Please specify the id of the project")
-			os.Exit(1)
+			cmd.Help()
 		}
 
 		if len(args) > 1 {
-			fmt.Println("Please only specify the id of the project")
+			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one project ID")
 			os.Exit(1)
 		}
 

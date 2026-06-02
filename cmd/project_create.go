@@ -17,16 +17,16 @@ var projectWithDefaultNetwork bool
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
-	Use:   "create",
-	Short: "Create a new reseller project",
+	Use:     "create",
+	Short:   "Create a new reseller project",
+	Example: "  pco-reseller-cli project create my-project\n  pco-reseller-cli project create my-project --description \"my project\" --with-default-network",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			fmt.Println("Please specify the name of the project")
-			os.Exit(1)
+			cmd.Help()
 		}
 
 		if len(args) > 1 {
-			fmt.Println("Please only specify the name of the project")
+			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one project name")
 			os.Exit(1)
 		}
 
@@ -35,9 +35,14 @@ var createCmd = &cobra.Command{
 		ctx := context.Background()
 		enabled := true
 
+		description := projectDescription
+		if !cmd.Flags().Changed("description") {
+			description = args[0]
+		}
+
 		resp, err := psOsClient.CreateProject(ctx, openapi.ProjectCreate{
 			Name:                args[0],
-			Description:         projectDescription,
+			Description:         description,
 			Enabled:             &enabled,
 			NetworkPreconfigure: &projectWithDefaultNetwork,
 		})
@@ -54,7 +59,7 @@ var createCmd = &cobra.Command{
 func init() {
 	projectCmd.AddCommand(createCmd)
 
-	createCmd.Flags().StringVarP(&projectDescription, "description", "d", "No Description", "Specify the description of the project")
+	createCmd.Flags().StringVarP(&projectDescription, "description", "d", "", "Description of the project (defaults to the project name if not set)")
 
 	createCmd.Flags().BoolVar(&projectWithDefaultNetwork, "with-default-network", false, "Specify if the default network should be created (default false)")
 }

@@ -18,12 +18,11 @@ var imageGetCmd = &cobra.Command{
 	Long:  `Get an image by ID`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			fmt.Println("Please specify the id of the image")
-			os.Exit(1)
+			cmd.Help()
 		}
 
 		if len(args) > 1 {
-			fmt.Println("Please only specify the id of the image")
+			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one image ID")
 			os.Exit(1)
 		}
 
