@@ -1,0 +1,2142 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "pco-api-expansion",
+    "version": "0.4.11"
+  },
+  "paths": {
+    "/api/v1/auth/login/access-token": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login Access Token",
+        "description": "OAuth2 compatible token login, get an access token for future requests",
+        "operationId": "login_access_token_api_v1_auth_login_access_token_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_access_token_api_v1_auth_login_access_token_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login/test-token": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Test Token",
+        "description": "Test access token",
+        "operationId": "test_token_api_v1_auth_login_test_token_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VaultUser"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/project/{project_id}": {
+      "get": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Get Project",
+        "operationId": "get_project_api_v1_project__project_id__get",
+        "parameters": [
+          {
+            "description": "The pluscloud open project id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "Project Id",
+              "description": "The pluscloud open project id"
+            },
+            "name": "project_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse_ProjectCreatedResponse_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Update Project",
+        "operationId": "update_project_api_v1_project__project_id__put",
+        "parameters": [
+          {
+            "description": "The pluscloud open project id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "Project Id",
+              "description": "The pluscloud open project id"
+            },
+            "name": "project_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse_ProjectCreatedResponse_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Delete Project",
+        "operationId": "delete_project_api_v1_project__project_id__delete",
+        "parameters": [
+          {
+            "description": "The pluscloud open project id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "Project Id",
+              "description": "The pluscloud open project id"
+            },
+            "name": "project_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/project/": {
+      "get": {
+        "tags": [
+          "project"
+        ],
+        "summary": "List Projects",
+        "operationId": "list_projects_api_v1_project__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListAPIResponse_ProjectCreatedResponse_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Create Project",
+        "operationId": "create_project_api_v1_project__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse_ProjectCreatedResponse_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/project/{project_id}/user": {
+      "get": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Get User For Project",
+        "operationId": "get_user_for_project_api_v1_project__project_id__user_get",
+        "parameters": [
+          {
+            "description": "The pluscloud open project id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "Project Id",
+              "description": "The pluscloud open project id"
+            },
+            "name": "project_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListAPIResponse_ProjectUser_"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/project/{project_id}/user/{user_id}": {
+      "post": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Add User To Project",
+        "operationId": "add_user_to_project_api_v1_project__project_id__user__user_id__post",
+        "parameters": [
+          {
+            "description": "The pluscloud open project id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "Project Id",
+              "description": "The pluscloud open project id"
+            },
+            "name": "project_id",
+            "in": "path"
+          },
+          {
+            "description": "The pluscloud open user id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "User Id",
+              "description": "The pluscloud open user id"
+            },
+            "name": "user_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Remove User From Project",
+        "operationId": "remove_user_from_project_api_v1_project__project_id__user__user_id__delete",
+        "parameters": [
+          {
+            "description": "The pluscloud open project id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "Project Id",
+              "description": "The pluscloud open project id"
+            },
+            "name": "project_id",
+            "in": "path"
+          },
+          {
+            "description": "The pluscloud open user id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "User Id",
+              "description": "The pluscloud open user id"
+            },
+            "name": "user_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/project/{project_id}/quota": {
+      "get": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Get Quota",
+        "operationId": "get_quota_api_v1_project__project_id__quota_get",
+        "parameters": [
+          {
+            "description": "The pluscloud open project id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "Project Id",
+              "description": "The pluscloud open project id"
+            },
+            "name": "project_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse_UpdateQuota_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Update Quota",
+        "operationId": "update_quota_api_v1_project__project_id__quota_put",
+        "parameters": [
+          {
+            "description": "The pluscloud open project id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "Project Id",
+              "description": "The pluscloud open project id"
+            },
+            "name": "project_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateQuota"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse_UpdateQuota_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/user/{user_id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get User",
+        "operationId": "get_user_api_v1_user__user_id__get",
+        "parameters": [
+          {
+            "description": "The pluscloud open user id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "User Id",
+              "description": "The pluscloud open user id"
+            },
+            "name": "user_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse_CreatedOpenStackUser_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Update User",
+        "operationId": "update_user_api_v1_user__user_id__put",
+        "parameters": [
+          {
+            "description": "The pluscloud open user id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "User Id",
+              "description": "The pluscloud open user id"
+            },
+            "name": "user_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOpenStackUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse_CreatedOpenStackUser_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete User",
+        "operationId": "delete_user_api_v1_user__user_id__delete",
+        "parameters": [
+          {
+            "description": "The pluscloud open user id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 32,
+              "pattern": "^[a-f0-9]+$",
+              "title": "User Id",
+              "description": "The pluscloud open user id"
+            },
+            "name": "user_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/user/": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "List Users",
+        "operationId": "list_users_api_v1_user__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListAPIResponse_CreatedOpenStackUser_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create User",
+        "operationId": "create_user_api_v1_user__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOpenStackUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse_CreatedOpenStackUser_"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/image/{image_id}": {
+      "get": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Get Image",
+        "operationId": "get_image_api_v1_image__image_id__get",
+        "parameters": [
+          {
+            "description": "The pluscloud image id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 32,
+              "pattern": "^[a-f0-9\\-]+$",
+              "title": "Image Id",
+              "description": "The pluscloud image id"
+            },
+            "name": "image_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse_ImageResponse_"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/image/{image_id}/visibility": {
+      "put": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Update Image Visibility",
+        "operationId": "update_image_visibility_api_v1_image__image_id__visibility_put",
+        "parameters": [
+          {
+            "description": "The pluscloud image id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 32,
+              "pattern": "^[a-f0-9\\-]+$",
+              "title": "Image Id",
+              "description": "The pluscloud image id"
+            },
+            "name": "image_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateImageVisibility"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleAPIResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BaseModel": {
+        "properties": {},
+        "type": "object",
+        "title": "BaseModel"
+      },
+      "Body_login_access_token_api_v1_auth_login_access_token_post": {
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "pattern": "password",
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "type": "string",
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "type": "string",
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_login_access_token_api_v1_auth_login_access_token_post"
+      },
+      "ComputeQuotas": {
+        "properties": {
+          "cores": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Cores",
+            "description": "Number of VCPUs",
+            "default": 40,
+            "minimum": 0.0
+          },
+          "fixed_ips": {
+            "type": "integer",
+            "minimum": -1.0,
+            "title": "Fixed Ips",
+            "default": -1
+          },
+          "floating_ips": {
+            "type": "integer",
+            "minimum": -1.0,
+            "title": "Floating Ips",
+            "description": "The number of allowed floating IP addresses for each project",
+            "default": -1
+          },
+          "injected_file_content_bytes": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Injected File Content Bytes",
+            "default": 10240,
+            "minimum": 0.0
+          },
+          "injected_file_path_bytes": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Injected File Path Bytes",
+            "default": 255,
+            "minimum": 0.0
+          },
+          "injected_files": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Injected Files",
+            "default": 5,
+            "minimum": 0.0
+          },
+          "instances": {
+            "type": "integer",
+            "minimum": -1.0,
+            "title": "Instances"
+          },
+          "key_pairs": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Key Pairs",
+            "minimum": 0.0
+          },
+          "metadata_items": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Metadata Items",
+            "minimum": 0.0
+          },
+          "ram": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Ram",
+            "description": "Maximum amount of RAM in MiB",
+            "default": 51200,
+            "minimum": 0.0
+          },
+          "security_group_rules": {
+            "type": "integer",
+            "minimum": -1.0,
+            "title": "Security Group Rules",
+            "default": -1
+          },
+          "security_groups": {
+            "type": "integer",
+            "minimum": -1.0,
+            "title": "Security Groups",
+            "default": -1
+          },
+          "server_group_members": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Server Group Members",
+            "default": 10,
+            "minimum": 0.0
+          },
+          "server_groups": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Server Groups",
+            "minimum": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "instances",
+          "key_pairs",
+          "metadata_items",
+          "server_groups"
+        ],
+        "title": "ComputeQuotas"
+      },
+      "CreateOpenStackUser": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\.\\+\\@\\-]+$",
+            "title": "Name",
+            "description": "Username (like E-Mail)  to login into the pluscloud open",
+            "examples": [
+              "u123456-user1",
+              "user@domain.de"
+            ]
+          },
+          "default_project": {
+            "type": "string",
+            "title": "Default Project",
+            "description": "Option to set the users default project via the project id",
+            "examples": [
+              "abcdef884444444444444121212121212"
+            ]
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "default": true
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 254,
+            "pattern": "^(?: *[\\/\\(\\)\\.\\&\\,\\;\\:\\@\\w\\s\\-])*",
+            "title": "Description",
+            "description": "Description of the pluscloud open user",
+            "examples": [
+              "Fancy description of your project"
+            ]
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 254,
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "password"
+        ],
+        "title": "CreateOpenStackUser"
+      },
+      "CreatedOpenStackUser": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\.\\+\\@\\-]+$",
+            "title": "Name",
+            "description": "Username (like E-Mail)  to login into the pluscloud open",
+            "examples": [
+              "u123456-user1",
+              "user@domain.de"
+            ]
+          },
+          "default_project": {
+            "type": "string",
+            "title": "Default Project",
+            "description": "Option to set the users default project via the project id",
+            "examples": [
+              "abcdef884444444444444121212121212"
+            ]
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "default": true
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 254,
+            "pattern": "^(?: *[\\/\\(\\)\\.\\&\\,\\;\\:\\@\\w\\s\\-])*",
+            "title": "Description",
+            "description": "Description of the pluscloud open user",
+            "examples": [
+              "Fancy description of your project"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "id"
+        ],
+        "title": "CreatedOpenStackUser"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ImageResponse": {
+        "properties": {
+          "checksum": {
+            "type": "string",
+            "title": "Checksum"
+          },
+          "container_format": {
+            "type": "string",
+            "title": "Container Format"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "disk_format": {
+            "type": "string",
+            "title": "Disk Format"
+          },
+          "file": {
+            "type": "string",
+            "title": "File"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "min_disk": {
+            "type": "integer",
+            "title": "Min Disk"
+          },
+          "min_ram": {
+            "type": "integer",
+            "title": "Min Ram"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "owner": {
+            "type": "string",
+            "title": "Owner"
+          },
+          "properties": {
+            "type": "object",
+            "title": "Properties"
+          },
+          "protected": {
+            "type": "boolean",
+            "title": "Protected"
+          },
+          "schema": {
+            "type": "string",
+            "title": "Schema"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "tags": {
+            "items": {},
+            "type": "array",
+            "title": "Tags"
+          },
+          "updated_at": {
+            "type": "string",
+            "title": "Updated At"
+          },
+          "virtual_size": {
+            "type": "integer",
+            "title": "Virtual Size"
+          },
+          "visibility": {
+            "type": "string",
+            "title": "Visibility"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "ImageResponse"
+      },
+      "ImageVisibility": {
+        "type": "string",
+        "enum": [
+          "community",
+          "public",
+          "private",
+          "shared"
+        ],
+        "title": "ImageVisibility",
+        "description": "An enumeration."
+      },
+      "ListAPIResponse_CreatedOpenStackUser_": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/CreatedOpenStackUser"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "ListAPIResponse[CreatedOpenStackUser]"
+      },
+      "ListAPIResponse_ProjectCreatedResponse_": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectCreatedResponse"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "ListAPIResponse[ProjectCreatedResponse]"
+      },
+      "ListAPIResponse_ProjectUser_": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectUser"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "ListAPIResponse[ProjectUser]"
+      },
+      "NetworkQuotas": {
+        "properties": {
+          "network": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Network",
+            "minimum": 0.0
+          },
+          "subnet": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Subnet",
+            "minimum": 0.0
+          },
+          "subnetpool": {
+            "type": "integer",
+            "minimum": -1.0,
+            "title": "Subnetpool",
+            "default": -1
+          },
+          "port": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Port",
+            "default": 500,
+            "minimum": 0.0
+          },
+          "router": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Router",
+            "minimum": 0.0
+          },
+          "floatingip": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Floatingip",
+            "description": "The number of floating IP addresses allowed for each project.A value of -1 means no limit",
+            "default": 8,
+            "minimum": -1.0
+          },
+          "rbac_policy": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Rbac Policy",
+            "description": "The number of role-based access control (RBAC) policies for each project",
+            "default": 10,
+            "minimum": 0.0
+          },
+          "security_group": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Security Group",
+            "minimum": 0.0
+          },
+          "security_group_rule": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Security Group Rule",
+            "minimum": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "network",
+          "subnet",
+          "router",
+          "security_group",
+          "security_group_rule"
+        ],
+        "title": "NetworkQuotas"
+      },
+      "ProjectCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^(?:\\w|-)+$",
+            "title": "Name",
+            "description": "Name of the pluscloud open project. A customer related prefix will be automatically appended",
+            "examples": [
+              "p123456-dev"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 254,
+            "pattern": "^[\\.\\:\\/\\&\\@\\w-]+(?: +[\\/(\\)\\.\\&\\@\\w-]+)*$",
+            "title": "Description",
+            "description": "Description of the pluscloud open project",
+            "examples": [
+              "My dev project"
+            ]
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "description": "Enables or disables the pluscloud open project",
+            "default": true
+          },
+          "network_preconfigure": {
+            "type": "boolean",
+            "title": "Network Preconfigure",
+            "description": "Preconfigures the pluscloudopen project with a ready to work environment by automatically supplying one router,subnet,network and secgroups",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description"
+        ],
+        "title": "ProjectCreate"
+      },
+      "ProjectCreatedResponse": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^(?:\\w|-)+$",
+            "title": "Name",
+            "description": "Name of the pluscloud open project. A customer related prefix will be automatically appended",
+            "examples": [
+              "p123456-dev"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 254,
+            "pattern": "^[\\.\\:\\/\\&\\@\\w-]+(?: +[\\/(\\)\\.\\&\\@\\w-]+)*$",
+            "title": "Description",
+            "description": "Description of the pluscloud open project",
+            "examples": [
+              "My dev project"
+            ]
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "description": "Enables or disables the pluscloud open project",
+            "default": true
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 32,
+            "pattern": "^[a-f0-9]+$",
+            "title": "Id",
+            "description": "The pluscloud open project id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "id"
+        ],
+        "title": "ProjectCreatedResponse"
+      },
+      "ProjectUpdate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          }
+        },
+        "type": "object",
+        "title": "ProjectUpdate"
+      },
+      "ProjectUser": {
+        "properties": {
+          "project": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 32,
+            "pattern": "^[a-f0-9]+$",
+            "title": "Project",
+            "description": "The pluscloud open project id"
+          },
+          "user": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 32,
+            "pattern": "^[a-f0-9]+$",
+            "title": "User",
+            "description": "The pluscloud open user id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project",
+          "user"
+        ],
+        "title": "ProjectUser"
+      },
+      "SingleAPIResponse": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/BaseModel"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "SingleAPIResponse"
+      },
+      "SingleAPIResponse_CreatedOpenStackUser_": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreatedOpenStackUser"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "SingleAPIResponse[CreatedOpenStackUser]"
+      },
+      "SingleAPIResponse_ImageResponse_": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ImageResponse"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "SingleAPIResponse[ImageResponse]"
+      },
+      "SingleAPIResponse_ProjectCreatedResponse_": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ProjectCreatedResponse"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "SingleAPIResponse[ProjectCreatedResponse]"
+      },
+      "SingleAPIResponse_UpdateQuota_": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpdateQuota"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "SingleAPIResponse[UpdateQuota]"
+      },
+      "Token": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "token_type"
+        ],
+        "title": "Token"
+      },
+      "UpdateImageVisibility": {
+        "properties": {
+          "visibility": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImageVisibility"
+              }
+            ],
+            "description": "The visibility status of the image"
+          }
+        },
+        "type": "object",
+        "required": [
+          "visibility"
+        ],
+        "title": "UpdateImageVisibility"
+      },
+      "UpdateOpenStackUser": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Username or e-mail to login into the pluscloud open"
+          },
+          "default_project": {
+            "type": "string",
+            "title": "Default Project",
+            "description": "Option to set the users default project via the project id",
+            "examples": [
+              "abcdef884444444444444121212121212"
+            ]
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "default": true
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 254,
+            "pattern": "^(?: *[\\/\\(\\)\\.\\&\\,\\;\\:\\@\\w\\s\\-])*",
+            "title": "Description",
+            "description": "Description of the pluscloud open user",
+            "examples": [
+              "Description of the user"
+            ]
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 254,
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "title": "UpdateOpenStackUser"
+      },
+      "UpdateQuota": {
+        "properties": {
+          "compute": {
+            "$ref": "#/components/schemas/ComputeQuotas"
+          },
+          "volume": {
+            "$ref": "#/components/schemas/VolumeQuotas"
+          },
+          "network": {
+            "$ref": "#/components/schemas/NetworkQuotas"
+          }
+        },
+        "type": "object",
+        "title": "UpdateQuota"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VaultUser": {
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "title": "Domain Id"
+          },
+          "project_prefix": {
+            "type": "string",
+            "title": "Project Prefix"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          }
+        },
+        "type": "object",
+        "required": [
+          "domain_id",
+          "project_prefix",
+          "username"
+        ],
+        "title": "VaultUser"
+      },
+      "VolumeQuotas": {
+        "properties": {
+          "volumes": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Volumes",
+            "minimum": 0.0
+          },
+          "per_volume_gigabytes": {
+            "type": "integer",
+            "minimum": -1.0,
+            "title": "Per Volume Gigabytes",
+            "default": -1
+          },
+          "snapshots": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Snapshots",
+            "description": "Maximum amount of snapshots",
+            "default": 50,
+            "minimum": 0.0
+          },
+          "gigabytes": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Gigabytes",
+            "description": "Maximum amount of available Storage",
+            "default": 2000,
+            "minimum": 0.0
+          },
+          "backups": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Backups",
+            "minimum": 0.0
+          },
+          "backup_gigabytes": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Backup Gigabytes",
+            "minimum": 0.0
+          },
+          "groups": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "title": "Groups",
+            "default": 10,
+            "minimum": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "volumes",
+          "backups",
+          "backup_gigabytes"
+        ],
+        "title": "VolumeQuotas"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "/api/v1/auth/login/access-token"
+          }
+        }
+      }
+    }
+  }
+}

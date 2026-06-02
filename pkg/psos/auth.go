@@ -19,7 +19,7 @@ func Login(endpoint, username, password string) (*PsOpenstackClient, error) {
 
 	ctx := context.Background()
 
-	data := fmt.Sprintf("grant_type=&username=%s&password=%s", url.QueryEscape(username), url.QueryEscape(password))
+	data := fmt.Sprintf("username=%s&password=%s", url.QueryEscape(username), url.QueryEscape(password))
 	loginResp, err := client.LoginAccessTokenApiV1AuthLoginAccessTokenPostWithBodyWithResponse(ctx, "application/x-www-form-urlencoded", strings.NewReader(data))
 	if err != nil {
 		return nil, err
