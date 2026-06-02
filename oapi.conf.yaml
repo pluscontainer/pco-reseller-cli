@@ -1,6 +1,5 @@
-package: psos
+package: openapi
 generate:
-  types: true
-  client: true
   models: true
-output: openapi.gen.go
+  client: true
+output: pkg/openapi/openapi.gen.go
