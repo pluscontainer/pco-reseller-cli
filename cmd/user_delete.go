@@ -26,7 +26,7 @@ var userDeleteCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println("User deleted")
+		fmt.Printf("Deleted user %s\n", args[0])
 		return nil
 	},
 }

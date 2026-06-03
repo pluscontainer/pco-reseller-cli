@@ -25,7 +25,7 @@ var projectUserDeleteCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println("User removed from project")
+		fmt.Printf("Removed user %s from project %s\n", args[1], args[0])
 		return nil
 	},
 }

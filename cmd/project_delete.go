@@ -25,7 +25,7 @@ var deleteCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println("Project deleted")
+		fmt.Printf("Deleted project %s\n", args[0])
 		return nil
 	},
 }

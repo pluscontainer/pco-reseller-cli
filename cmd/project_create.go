@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
@@ -42,7 +41,7 @@ var createCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println(resp.Id)
+		printProjects([]openapi.ProjectCreatedResponse{*resp})
 		return nil
 	},
 }

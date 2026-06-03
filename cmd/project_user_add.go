@@ -25,7 +25,7 @@ var projectUserAddCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println("User added to project")
+		fmt.Printf("Added user %s to project %s\n", args[1], args[0])
 		return nil
 	},
 }

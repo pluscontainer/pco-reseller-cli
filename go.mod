@@ -65,6 +65,7 @@ require (
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
+	github.com/sethvargo/go-password v0.3.1 // indirect
 	github.com/sirupsen/logrus v1.9.1 // indirect
 	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/tdewolff/minify/v2 v2.20.19 // indirect

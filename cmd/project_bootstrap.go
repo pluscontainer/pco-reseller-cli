@@ -5,30 +5,15 @@ package cmd
 
 import (
 	"context"
-	"crypto/rand"
 	"fmt"
-	"math/big"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
+	"github.com/sethvargo/go-password/password"
 	"github.com/spf13/cobra"
 )
 
 var bootstrapUserName, bootstrapPassword, bootstrapDescription string
 var bootstrapWithDefaultNetwork bool
-
-const passwordChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#%^&*-_"
-
-func generatePassword(length int) (string, error) {
-	buf := make([]byte, length)
-	for i := range buf {
-		n, err := rand.Int(rand.Reader, big.NewInt(int64(len(passwordChars))))
-		if err != nil {
-			return "", err
-		}
-		buf[i] = passwordChars[n.Int64()]
-	}
-	return string(buf), nil
-}
 
 var bootstrapCmd = &cobra.Command{
 	Use:     "bootstrap [project-name]",
@@ -49,10 +34,10 @@ var bootstrapCmd = &cobra.Command{
 			userName = projectName + "-admin"
 		}
 
-		password := bootstrapPassword
+		pw := bootstrapPassword
 		if !cmd.Flags().Changed("password") {
 			var err error
-			password, err = generatePassword(24)
+			pw, err = password.Generate(24, 4, 4, false, true)
 			if err != nil {
 				return fmt.Errorf("error generating password: %w", err)
 			}
@@ -71,21 +56,24 @@ var bootstrapCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("error creating project: %w", err)
 		}
+		fmt.Printf("Created project %s (%s)\n", project.Name, project.Id)
 
 		user, err := psOsClient.CreateUser(ctx, openapi.CreateOpenStackUser{
 			Name:           userName,
 			Description:    description,
 			Enabled:        &enabled,
 			DefaultProject: &project.Id,
-			Password:       password,
+			Password:       pw,
 		})
 		if err != nil {
 			return fmt.Errorf("error creating user: %w", err)
 		}
+		fmt.Printf("Created user %s (%s)\n", user.Name, user.Id)
 
 		if err := psOsClient.AddUserToProject(ctx, project.Id, user.Id); err != nil {
 			return fmt.Errorf("error adding user to project: %w", err)
 		}
+		fmt.Printf("Assigned user %s to project %s\n", user.Name, project.Name)
 
 		fmt.Println()
 		fmt.Println("Bootstrap completed successfully")
@@ -93,7 +81,7 @@ var bootstrapCmd = &cobra.Command{
 		fmt.Printf("Project Name: %s\n", project.Name)
 		fmt.Printf("Project ID:   %s\n", project.Id)
 		fmt.Printf("User Name:    %s\n", user.Name)
-		fmt.Printf("Password:     %s\n", password)
+		fmt.Printf("Password:     %s\n", pw)
 		return nil
 	},
 }

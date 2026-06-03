@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
@@ -36,7 +35,7 @@ var userCreateCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println(resp.Id)
+		printUsers([]openapi.CreatedOpenStackUser{*resp})
 		return nil
 	},
 }
@@ -44,7 +43,7 @@ var userCreateCmd = &cobra.Command{
 func init() {
 	userCmd.AddCommand(userCreateCmd)
 
-	userCreateCmd.Flags().StringVarP(&userDescription, "description", "d", "No Description", "Specify the description of the user")
+	userCreateCmd.Flags().StringVarP(&userDescription, "description", "d", "", "Description of the user (defaults to the user name if not set)")
 
 	userCreateCmd.Flags().StringVar(&userDefaultProject, "default-project", "", "Specify the default project of the user")
 	if err := userCreateCmd.MarkFlagRequired("default-project"); err != nil {
