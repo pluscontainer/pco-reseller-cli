@@ -3,8 +3,16 @@ Copyright © 2022 PlusServer GmbH
 */
 package main
 
-import "github.com/pluscontainer/pco-reseller-cli/cmd"
+import (
+	"os"
+
+	"github.com/pluscontainer/pco-reseller-cli/cmd"
+	log "github.com/sirupsen/logrus"
+)
 
 func main() {
-	cmd.Execute()
+	if err := cmd.Execute(); err != nil {
+		log.Errorf("%s", err)
+		os.Exit(1)
+	}
 }
