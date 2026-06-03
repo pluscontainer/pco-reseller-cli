@@ -5,8 +5,8 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +21,7 @@ var projectUserDeleteCmd = &cobra.Command{
 			return err
 		}
 
-		log.Infof("Removed user %s from project %s", args[1], args[0])
+		fmt.Printf("Removed user %s from project %s\n", args[1], args[0])
 		return nil
 	},
 }

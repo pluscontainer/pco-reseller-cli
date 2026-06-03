@@ -9,7 +9,6 @@ import (
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/sethvargo/go-password/password"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -57,7 +56,7 @@ var bootstrapCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("error creating project: %w", err)
 		}
-		log.Infof("Created project %s (%s)", project.Name, project.Id)
+		fmt.Printf("Created project %s (%s)\n", project.Name, project.Id)
 
 		user, err := psOsClient.CreateUser(ctx, openapi.CreateOpenStackUser{
 			Name:           userName,
@@ -69,18 +68,18 @@ var bootstrapCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("error creating user: %w", err)
 		}
-		log.Infof("Created user %s (%s)", user.Name, user.Id)
+		fmt.Printf("Created user %s (%s)\n", user.Name, user.Id)
 
 		if err := psOsClient.AddUserToProject(ctx, project.Id, user.Id); err != nil {
 			return fmt.Errorf("error adding user to project: %w", err)
 		}
-		log.Infof("Assigned user %s to project %s", user.Name, project.Name)
+		fmt.Printf("Assigned user %s to project %s\n", user.Name, project.Name)
 
 		if bootstrapWithDefaultQuota {
 			if _, err := psOsClient.UpdateProjectQuota(ctx, project.Id, defaultQuota); err != nil {
 				return fmt.Errorf("error applying default quota: %w", err)
 			}
-			log.Infof("Applied default quota to project %s", project.Name)
+			fmt.Printf("Applied default quota to project %s\n", project.Name)
 		}
 
 		fmt.Println()

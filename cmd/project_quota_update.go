@@ -5,12 +5,14 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/spf13/cobra"
 )
 
 var quotaCPU, quotaRAM, quotaInstances, quotaKeyPairs, quotaServerGroups, quotaServerGroupMembers, quotaVolumes, quotaGigabytes, quotaBackups, quotaBackupGigabytes, quotaSnapshots, quotaVolumeGroups int
 var quotaNetworks, quotaFloatingIPs, quotaPorts, quotaRBAC, quotaRouters, quotaSecurityGroups, quotaSecurityGroupRules, quotaSubnets int
+var quotaApplyDefault bool
 
 var updateQuotaCmd = &cobra.Command{
 	Use:   "update [project-id]",
@@ -19,6 +21,19 @@ var updateQuotaCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
 		ctx := context.Background()
+
+		if quotaApplyDefault {
+			if cmd.Flags().NFlag() > 1 {
+				return fmt.Errorf("--default cannot be combined with other flags")
+			}
+			resp, err := psOsClient.UpdateProjectQuota(ctx, args[0], defaultQuota)
+			if err != nil {
+				return err
+			}
+			printQuota(*resp)
+			return nil
+		}
+
 		resp, err := psOsClient.GetProjectQuota(ctx, args[0])
 		if err != nil {
 			return err
@@ -97,6 +112,7 @@ var updateQuotaCmd = &cobra.Command{
 
 func init() {
 	quotaCmd.AddCommand(updateQuotaCmd)
+	updateQuotaCmd.Flags().BoolVar(&quotaApplyDefault, "default", false, "Apply the standard quota set to the project")
 	updateQuotaCmd.Flags().IntVar(&quotaCPU, "cpu", 0, "Update the number of CPUs the project can consume")
 	updateQuotaCmd.Flags().IntVar(&quotaRAM, "ram", 0, "Update the amount of RAM the project can consume (in MiB)")
 	updateQuotaCmd.Flags().IntVar(&quotaInstances, "instances", 0, "Update the number of instances the project can start")

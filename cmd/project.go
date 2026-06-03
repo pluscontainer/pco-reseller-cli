@@ -14,6 +14,7 @@ import (
 var projectCmd = &cobra.Command{
 	Use:   "project",
 	Short: "Manage projects",
+	Long:  `Create, update, delete projects`,
 }
 
 func printProjects(projects []openapi.ProjectCreatedResponse) {

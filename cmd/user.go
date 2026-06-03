@@ -14,6 +14,7 @@ import (
 var userCmd = &cobra.Command{
 	Use:   "user",
 	Short: "Manage users",
+	Long:  `Get, create, update, delete users`,
 }
 
 func printUsers(users []openapi.CreatedOpenStackUser) {

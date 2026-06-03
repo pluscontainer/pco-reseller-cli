@@ -13,21 +13,21 @@ import (
 
 var defaultQuota = openapi.UpdateQuota{
 	Compute: &openapi.ComputeQuotas{
-		Cores:              intPtr(256),
-		FloatingIps:        intPtr(60),
+		Cores:              new(256),
+		FloatingIps:        new(60),
 		Instances:          500,
 		KeyPairs:           500,
 		MetadataItems:      100,
-		Ram:                intPtr(524288),
-		SecurityGroupRules: intPtr(500),
-		SecurityGroups:     intPtr(500),
-		ServerGroupMembers: intPtr(500),
+		Ram:                new(524288),
+		SecurityGroupRules: new(500),
+		SecurityGroups:     new(500),
+		ServerGroupMembers: new(500),
 		ServerGroups:       60,
 	},
 	Network: &openapi.NetworkQuotas{
-		Floatingip:        intPtr(60),
+		Floatingip:        new(60),
 		Network:           60,
-		Port:              intPtr(1000),
+		Port:              new(1000),
 		Router:            60,
 		SecurityGroup:     500,
 		SecurityGroupRule: 500,
@@ -36,17 +36,16 @@ var defaultQuota = openapi.UpdateQuota{
 	Volume: &openapi.VolumeQuotas{
 		BackupGigabytes: 4000,
 		Backups:         100,
-		Gigabytes:       intPtr(4000),
-		Snapshots:       intPtr(100),
+		Gigabytes:       new(4000),
+		Snapshots:       new(100),
 		Volumes:         1000,
 	},
 }
 
-func intPtr(v int) *int { return &v }
-
 var quotaCmd = &cobra.Command{
 	Use:   "quota",
 	Short: "Get and update project quotas",
+	Long:  `Get and update compute, network and volume quotas for a project`,
 }
 
 func printQuota(quota openapi.UpdateQuota) {

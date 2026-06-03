@@ -7,7 +7,6 @@ import (
 	"context"
 	"fmt"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -24,7 +23,7 @@ var projectUserListCmd = &cobra.Command{
 		}
 
 		if resp == nil {
-			log.Info("No users assigned to project")
+			fmt.Println("No users assigned to project")
 			return nil
 		}
 

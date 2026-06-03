@@ -4,25 +4,13 @@ Copyright © 2022 PlusServer GmbH
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/psos"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
-
-type cliFormatter struct{}
-
-func (f *cliFormatter) Format(entry *log.Entry) ([]byte, error) {
-	level := strings.ToUpper(entry.Level.String())
-	return []byte(fmt.Sprintf("[%s] %s\n", level, entry.Message)), nil
-}
-
-func init() {
-	log.SetFormatter(&cliFormatter{})
-}
 
 var rootCmd = &cobra.Command{
 	Use:           "pco-reseller-cli",
@@ -41,27 +29,35 @@ const (
 	psosPasswordEnvKey = "PSOS_PASSWORD"
 )
 
+func envKeyMissingError(key string) error {
+	return fmt.Errorf("environment variable %s is not set", key)
+}
+
 func fetchPsOpenStackClientOrDie() *psos.PsOpenstackClient {
-	var missing []string
-	for _, key := range []string{psosEndpointEnvKey, psosUsernameEnvKey, psosPasswordEnvKey} {
-		if _, ok := os.LookupEnv(key); !ok {
-			missing = append(missing, key)
-		}
+	var errList []error
+	endpoint, ok := os.LookupEnv(psosEndpointEnvKey)
+	if !ok {
+		errList = append(errList, envKeyMissingError(psosEndpointEnvKey))
 	}
-	if len(missing) > 0 {
-		for _, key := range missing {
-			log.Errorf("environment variable %s is not set", key)
-		}
+
+	username, ok := os.LookupEnv(psosUsernameEnvKey)
+	if !ok {
+		errList = append(errList, envKeyMissingError(psosUsernameEnvKey))
+	}
+
+	password, ok := os.LookupEnv(psosPasswordEnvKey)
+	if !ok {
+		errList = append(errList, envKeyMissingError(psosPasswordEnvKey))
+	}
+
+	if err := errors.Join(errList...); err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	psOsClient, err := psos.Login(
-		os.Getenv(psosEndpointEnvKey),
-		os.Getenv(psosUsernameEnvKey),
-		os.Getenv(psosPasswordEnvKey),
-	)
+	psOsClient, err := psos.Login(endpoint, username, password)
 	if err != nil {
-		log.Error(err)
+		fmt.Println(err)
 		os.Exit(1)
 	}
 

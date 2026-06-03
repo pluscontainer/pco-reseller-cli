@@ -14,6 +14,7 @@ import (
 var imageCmd = &cobra.Command{
 	Use:   "image",
 	Short: "Manage images",
+	Long:  `Get images and manage their visibility`,
 }
 
 func printImages(images []openapi.ImageResponse) {
