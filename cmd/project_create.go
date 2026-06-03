@@ -6,7 +6,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
@@ -17,19 +16,11 @@ var projectWithDefaultNetwork bool
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
-	Use:     "create",
+	Use:     "create [project-id]",
 	Short:   "Create a new reseller project",
 	Example: "  pco-reseller-cli project create my-project\n  pco-reseller-cli project create my-project --description \"my project\" --with-default-network",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			cmd.Help()
-		}
-
-		if len(args) > 1 {
-			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one project name")
-			os.Exit(1)
-		}
-
+	Args:    cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
 
 		ctx := context.Background()
@@ -48,11 +39,11 @@ var createCmd = &cobra.Command{
 		})
 
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		fmt.Println(resp.Id)
+		return nil
 	},
 }
 

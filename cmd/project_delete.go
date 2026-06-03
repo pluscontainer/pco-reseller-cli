@@ -6,36 +6,27 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 )
 
 // createCmd represents the create command
 var deleteCmd = &cobra.Command{
-	Use:   "delete",
+	Use:   "delete [project-id]",
 	Short: "Delete a reseller project",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			cmd.Help()
-		}
-
-		if len(args) > 1 {
-			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one project ID")
-			os.Exit(1)
-		}
-
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
 
 		ctx := context.Background()
 		err := psOsClient.DeleteProject(ctx, args[0])
 
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		fmt.Println("Project deleted")
+		return nil
 	},
 }
 

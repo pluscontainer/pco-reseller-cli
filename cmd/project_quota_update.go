@@ -5,8 +5,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -16,25 +14,16 @@ var quotaNetworks, quotaFloatingIPs, quotaPorts, quotaRBAC, quotaRouters, quotaS
 
 // listCmd represents the list command
 var updateQuotaCmd = &cobra.Command{
-	Use:   "update",
+	Use:   "update [project-id]",
 	Short: "Update the quotas of the specified project",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			cmd.Help()
-		}
-
-		if len(args) > 1 {
-			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one project ID")
-			os.Exit(1)
-		}
-
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
 
 		ctx := context.Background()
 		resp, err := psOsClient.GetProjectQuota(ctx, args[0])
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		if quotaCPU != 0 {
@@ -119,11 +108,11 @@ var updateQuotaCmd = &cobra.Command{
 
 		resp, err = psOsClient.UpdateProjectQuota(ctx, args[0], *resp)
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		printQuota(*resp)
+		return nil
 	},
 }
 

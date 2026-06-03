@@ -5,8 +5,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -15,17 +13,17 @@ import (
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all projects",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
 
 		ctx := context.Background()
 		resp, err := psOsClient.GetProjects(ctx)
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		printProjects(*resp)
+		return nil
 	},
 }
 

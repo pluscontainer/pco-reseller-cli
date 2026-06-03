@@ -5,8 +5,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
-	"os"
 	"strings"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
@@ -18,30 +16,16 @@ var projectName string
 
 // listCmd represents the list command
 var updateCmd = &cobra.Command{
-	Use:   "update",
+	Use:   "update [project-id]",
 	Short: "Updated a projects name, description or enablement",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			cmd.Help()
-		}
-
-		if len(args) > 1 {
-			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one project ID")
-			os.Exit(1)
-		}
-
-		if enableProject && disableProject {
-			fmt.Println("Can't enable and disable the project")
-			os.Exit(1)
-		}
-
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
 
 		ctx := context.Background()
 		resp, err := psOsClient.GetProject(ctx, args[0])
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		var isProjectEnabled bool
@@ -71,11 +55,11 @@ var updateCmd = &cobra.Command{
 		})
 
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		printProjects([]openapi.ProjectCreatedResponse{*resp})
+		return nil
 	},
 }
 
@@ -86,4 +70,5 @@ func init() {
 	updateCmd.Flags().StringVarP(&projectDescription, "description", "d", "", "Update the description of the project")
 	updateCmd.Flags().BoolVar(&enableProject, "enable", false, "Enable the specified project")
 	updateCmd.Flags().BoolVar(&disableProject, "disable", false, "Disable the specified project")
+	updateCmd.MarkFlagsMutuallyExclusive("enable", "disable")
 }

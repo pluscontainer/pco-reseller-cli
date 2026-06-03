@@ -6,7 +6,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
@@ -15,40 +14,30 @@ import (
 var imageVisibility string
 
 var imageUpdateVisibilityCmd = &cobra.Command{
-	Use:   "update-visibility",
+	Use:   "update-visibility [image-id]",
 	Short: "Update image visibility",
 	Long:  `Update the visibility of an image (community, public, private, shared)`,
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			cmd.Help()
-		}
-
-		if len(args) > 1 {
-			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one image ID")
-			os.Exit(1)
-		}
-
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		visibility := openapi.ImageVisibility(imageVisibility)
 		if !visibility.Valid() {
-			fmt.Printf("Invalid visibility %q. Valid values: community, public, private, shared\n", imageVisibility)
-			os.Exit(1)
+			return fmt.Errorf("invalid visibility %q. valid values: community, public, private, shared", imageVisibility)
 		}
 
 		psOsClient := fetchPsOpenStackClientOrDie()
 
 		ctx := context.Background()
 		if err := psOsClient.UpdateImageVisibility(ctx, args[0], visibility); err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		resp, err := psOsClient.GetImage(ctx, args[0])
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		printImages([]openapi.ImageResponse{*resp})
+		return nil
 	},
 }
 
@@ -56,5 +45,7 @@ func init() {
 	imageCmd.AddCommand(imageUpdateVisibilityCmd)
 
 	imageUpdateVisibilityCmd.Flags().StringVarP(&imageVisibility, "visibility", "v", "", "Visibility of the image (community, public, private, shared)")
-	imageUpdateVisibilityCmd.MarkFlagRequired("visibility")
+	if err := imageUpdateVisibilityCmd.MarkFlagRequired("visibility"); err != nil {
+		panic(err)
+	}
 }

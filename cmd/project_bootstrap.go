@@ -8,7 +8,6 @@ import (
 	"crypto/rand"
 	"fmt"
 	"math/big"
-	"os"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
@@ -32,21 +31,12 @@ func generatePassword(length int) (string, error) {
 }
 
 var bootstrapCmd = &cobra.Command{
-	Use:   "bootstrap",
-	Short: "Bootstrap a project with a user",
-	Long:  `Creates a project, a user and assigns the user to the project in one step.`,
+	Use:     "bootstrap [project-name]",
+	Short:   "Bootstrap a project with a user",
+	Long:    `Creates a project, a user and assigns the user to the project in one step.`,
 	Example: "  pco-reseller-cli project bootstrap my-project\n  pco-reseller-cli project bootstrap my-project --password secret\n  pco-reseller-cli project bootstrap my-project --user-name my-user --with-default-network",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			cmd.Help()
-			return
-		}
-
-		if len(args) > 1 {
-			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one project name")
-			os.Exit(1)
-		}
-
+	Args:    cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		projectName := args[0]
 
 		description := bootstrapDescription
@@ -64,8 +54,7 @@ var bootstrapCmd = &cobra.Command{
 			var err error
 			password, err = generatePassword(24)
 			if err != nil {
-				fmt.Fprintln(os.Stderr, "Error generating password:", err.Error())
-				os.Exit(1)
+				return fmt.Errorf("error generating password: %w", err)
 			}
 		}
 
@@ -80,8 +69,7 @@ var bootstrapCmd = &cobra.Command{
 			NetworkPreconfigure: &bootstrapWithDefaultNetwork,
 		})
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "Error creating project:", err.Error())
-			os.Exit(1)
+			return fmt.Errorf("error creating project: %w", err)
 		}
 
 		user, err := psOsClient.CreateUser(ctx, openapi.CreateOpenStackUser{
@@ -92,13 +80,11 @@ var bootstrapCmd = &cobra.Command{
 			Password:       password,
 		})
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "Error creating user:", err.Error())
-			os.Exit(1)
+			return fmt.Errorf("error creating user: %w", err)
 		}
 
 		if err := psOsClient.AddUserToProject(ctx, project.Id, user.Id); err != nil {
-			fmt.Fprintln(os.Stderr, "Error adding user to project:", err.Error())
-			os.Exit(1)
+			return fmt.Errorf("error adding user to project: %w", err)
 		}
 
 		fmt.Println()
@@ -108,6 +94,7 @@ var bootstrapCmd = &cobra.Command{
 		fmt.Printf("Project ID:   %s\n", project.Id)
 		fmt.Printf("User Name:    %s\n", user.Name)
 		fmt.Printf("Password:     %s\n", password)
+		return nil
 	},
 }
 

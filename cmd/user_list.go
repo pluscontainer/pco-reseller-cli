@@ -1,13 +1,10 @@
 /*
 Copyright © 2022 PlusServer GmbH
-
 */
 package cmd
 
 import (
 	"context"
-	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -17,17 +14,17 @@ var userListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all users assigned to the reseller account",
 	Long:  `List all users assigned to the reseller account`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
 
 		ctx := context.Background()
 		resp, err := psOsClient.GetUsers(ctx)
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		printUsers(*resp)
+		return nil
 	},
 }
 

@@ -6,7 +6,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
@@ -16,18 +15,10 @@ var userDescription, userDefaultProject, userPassword string
 
 // createCmd represents the create command
 var userCreateCmd = &cobra.Command{
-	Use:   "create",
+	Use:   "create [user-name]",
 	Short: "Create a new reseller user",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			cmd.Help()
-		}
-
-		if len(args) > 1 {
-			fmt.Fprintln(os.Stderr, "Error: too many arguments, expected exactly one user name")
-			os.Exit(1)
-		}
-
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
 
 		ctx := context.Background()
@@ -42,11 +33,11 @@ var userCreateCmd = &cobra.Command{
 		})
 
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		fmt.Println(resp.Id)
+		return nil
 	},
 }
 
@@ -56,8 +47,12 @@ func init() {
 	userCreateCmd.Flags().StringVarP(&userDescription, "description", "d", "No Description", "Specify the description of the user")
 
 	userCreateCmd.Flags().StringVar(&userDefaultProject, "default-project", "", "Specify the default project of the user")
-	userCreateCmd.MarkFlagRequired("default-project")
+	if err := userCreateCmd.MarkFlagRequired("default-project"); err != nil {
+		panic(err)
+	}
 
 	userCreateCmd.Flags().StringVarP(&userPassword, "password", "p", "", "Specify the password of the user")
-	userCreateCmd.MarkFlagRequired("password")
+	if err := userCreateCmd.MarkFlagRequired("password"); err != nil {
+		panic(err)
+	}
 }

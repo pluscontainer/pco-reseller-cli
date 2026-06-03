@@ -1,37 +1,32 @@
 /*
 Copyright © 2022 PlusServer GmbH
-
 */
 package cmd
 
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 )
 
 // addCmd represents the add command
 var projectUserAddCmd = &cobra.Command{
-	Use:   "add",
+	Use:   "add [project-id] [user-id]",
 	Short: "Add a user to a specific project",
 	Long:  `Add a user to a specific project`,
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) != 2 {
-			cmd.Help()
-		}
-
+	Args:  cobra.ExactArgs(2),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
 
 		ctx := context.Background()
 		err := psOsClient.AddUserToProject(ctx, args[0], args[1])
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		fmt.Println("User added to project")
+		return nil
 	},
 }
 

@@ -6,7 +6,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/psos"
 	"github.com/spf13/cobra"
@@ -14,7 +13,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "v2",
+	Use:   "pco-reseller-cli",
 	Short: "Managed OpenStack projects and users as a reseller",
 	Long:  `Managed OpenStack projects and users as a reseller`,
 	// Uncomment the following line if your bare application
@@ -27,35 +26,44 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
 }
 
+const (
+	psosEndpointEnvKey = "PSOS_ENDPOINT"
+	psosUsernameEnvKey = "PSOS_USERNAME"
+	psosPasswordEnvKey = "PSOS_PASSWORD"
+)
+
 func fetchPsOpenStackClientOrDie() *psos.PsOpenstackClient {
-	endpoint := os.Getenv("PSOS_ENDPOINT")
-	if len(strings.TrimSpace(endpoint)) == 0 {
-		fmt.Println("Please define env PSOS_ENDPOINT")
-		os.Exit(1)
+	errList := []error{}
+	endpoint, ok := os.LookupEnv(psosEndpointEnvKey)
+	if !ok {
+		errList = append(errList, envKeyMissingError(psosEndpointEnvKey))
 	}
 
-	user := os.Getenv("PSOS_USERNAME")
-	if len(strings.TrimSpace(user)) == 0 {
-		fmt.Println("Please define env PSOS_USERNAME")
-		os.Exit(1)
+	username, ok := os.LookupEnv(psosUsernameEnvKey)
+	if !ok {
+		errList = append(errList, envKeyMissingError(psosUsernameEnvKey))
 	}
 
-	password := os.Getenv("PSOS_PASSWORD")
-	if len(strings.TrimSpace(password)) == 0 {
-		fmt.Println("Please define env PSOS_PASSWORD")
-		os.Exit(1)
+	password, ok := os.LookupEnv(psosPasswordEnvKey)
+	if !ok {
+		errList = append(errList, envKeyMissingError(psosPasswordEnvKey))
 	}
 
 	var err error
-	psOsClient, err := psos.Login(endpoint, user, password)
+	psOsClient, err := psos.Login(endpoint, username, password)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
 	return psOsClient
+}
+
+func envKeyMissingError(key string) error {
+	return fmt.Errorf("please define env %s", key)
 }
