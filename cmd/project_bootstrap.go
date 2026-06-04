@@ -37,7 +37,7 @@ var bootstrapCmd = &cobra.Command{
 		pw := bootstrapPassword
 		if !cmd.Flags().Changed("password") {
 			var err error
-			pw, err = password.Generate(24, 4, 4, false, true)
+			pw, err = password.Generate(32, 5, 0, false, false)
 			if err != nil {
 				return fmt.Errorf("error generating password: %w", err)
 			}
