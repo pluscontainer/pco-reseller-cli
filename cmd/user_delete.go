@@ -6,38 +6,23 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 )
 
-// createCmd represents the create command
 var userDeleteCmd = &cobra.Command{
-	Use:   "delete",
+	Use:   "delete [user-id]",
 	Short: "Delete a reseller user",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			fmt.Println("Please specify the id of the user")
-			os.Exit(1)
-		}
-
-		if len(args) > 1 {
-			fmt.Println("Please only specify the id of the user")
-			os.Exit(1)
-		}
-
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
-
 		ctx := context.Background()
-
-		err := psOsClient.DeleteUser(ctx, args[0])
-
-		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+		if err := psOsClient.DeleteUser(ctx, args[0]); err != nil {
+			return err
 		}
 
-		fmt.Println("User deleted")
+		fmt.Printf("Deleted user %s\n", args[0])
+		return nil
 	},
 }
 

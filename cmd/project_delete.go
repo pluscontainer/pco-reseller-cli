@@ -6,37 +6,23 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 )
 
-// createCmd represents the create command
 var deleteCmd = &cobra.Command{
-	Use:   "delete",
+	Use:   "delete [project-id]",
 	Short: "Delete a reseller project",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			fmt.Println("Please specify the id of the project")
-			os.Exit(1)
-		}
-
-		if len(args) > 1 {
-			fmt.Println("Please only specify the id of the project")
-			os.Exit(1)
-		}
-
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
-
 		ctx := context.Background()
-		err := psOsClient.DeleteProject(ctx, args[0])
-
-		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+		if err := psOsClient.DeleteProject(ctx, args[0]); err != nil {
+			return err
 		}
 
-		fmt.Println("Project deleted")
+		fmt.Printf("Deleted project %s\n", args[0])
+		return nil
 	},
 }
 

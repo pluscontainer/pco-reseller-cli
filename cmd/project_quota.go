@@ -11,25 +11,41 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// quotaCmd represents the quota command
+var defaultQuota = openapi.UpdateQuota{
+	Compute: &openapi.ComputeQuotas{
+		Cores:              new(256),
+		FloatingIps:        new(60),
+		Instances:          500,
+		KeyPairs:           500,
+		MetadataItems:      100,
+		Ram:                new(524288),
+		SecurityGroupRules: new(500),
+		SecurityGroups:     new(500),
+		ServerGroupMembers: new(500),
+		ServerGroups:       60,
+	},
+	Network: &openapi.NetworkQuotas{
+		Floatingip:        new(60),
+		Network:           60,
+		Port:              new(1000),
+		Router:            60,
+		SecurityGroup:     500,
+		SecurityGroupRule: 500,
+		Subnet:            500,
+	},
+	Volume: &openapi.VolumeQuotas{
+		BackupGigabytes: 4000,
+		Backups:         100,
+		Gigabytes:       new(4000),
+		Snapshots:       new(100),
+		Volumes:         1000,
+	},
+}
+
 var quotaCmd = &cobra.Command{
 	Use:   "quota",
 	Short: "Get and update project quotas",
-	Long:  `Get and update project quotas`,
-}
-
-func init() {
-	projectCmd.AddCommand(quotaCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// quotaCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// quotaCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	Long:  `Get and update compute, network and volume quotas for a project`,
 }
 
 func printQuota(quota openapi.UpdateQuota) {
@@ -40,7 +56,7 @@ func printQuota(quota openapi.UpdateQuota) {
 	l.Indent()
 	l.AppendItem("Compute:")
 	l.Indent()
-	l.AppendItems([]interface{}{
+	l.AppendItems([]any{
 		fmt.Sprintf("vCPU: %d", *quota.Compute.Cores),
 		fmt.Sprintf("RAM: %d MiB", *quota.Compute.Ram),
 		fmt.Sprintf("Instances: %d", quota.Compute.Instances),
@@ -54,9 +70,9 @@ func printQuota(quota openapi.UpdateQuota) {
 	l.UnIndent()
 	l.AppendItem("Volume:")
 	l.Indent()
-	l.AppendItems([]interface{}{
+	l.AppendItems([]any{
 		fmt.Sprintf("Volumes: %d", quota.Volume.Volumes),
-		fmt.Sprintf("Gigabyes: %d", *quota.Volume.Gigabytes),
+		fmt.Sprintf("Gigabytes: %d", *quota.Volume.Gigabytes),
 		fmt.Sprintf("Per Volume Gigabytes: %d", *quota.Volume.PerVolumeGigabytes),
 		fmt.Sprintf("Backups: %d", quota.Volume.Backups),
 		fmt.Sprintf("Backup Gigabytes: %d", quota.Volume.BackupGigabytes),
@@ -66,7 +82,7 @@ func printQuota(quota openapi.UpdateQuota) {
 	l.UnIndent()
 	l.AppendItem("Network:")
 	l.Indent()
-	l.AppendItems([]interface{}{
+	l.AppendItems([]any{
 		fmt.Sprintf("Networks: %d", quota.Network.Network),
 		fmt.Sprintf("Floating IPs: %d", *quota.Network.Floatingip),
 		fmt.Sprintf("Ports: %d", *quota.Network.Port),
@@ -79,4 +95,8 @@ func printQuota(quota openapi.UpdateQuota) {
 	})
 
 	fmt.Println(l.Render())
+}
+
+func init() {
+	projectCmd.AddCommand(quotaCmd)
 }
