@@ -5,8 +5,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
-	"os"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
@@ -14,51 +12,45 @@ import (
 
 var userDescription, userDefaultProject, userPassword string
 
-// createCmd represents the create command
 var userCreateCmd = &cobra.Command{
-	Use:   "create",
+	Use:   "create [user-name]",
 	Short: "Create a new reseller user",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			fmt.Println("Please specify the name of the user")
-			os.Exit(1)
-		}
-
-		if len(args) > 1 {
-			fmt.Println("Please only specify the name of the user")
-			os.Exit(1)
-		}
-
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
-
 		ctx := context.Background()
 		enabled := true
 
+		description := userDescription
+		if !cmd.Flags().Changed("description") {
+			description = args[0]
+		}
+
 		resp, err := psOsClient.CreateUser(ctx, openapi.CreateOpenStackUser{
 			Name:           args[0],
-			Description:    userDescription,
+			Description:    description,
 			Enabled:        &enabled,
 			DefaultProject: &userDefaultProject,
 			Password:       userPassword,
 		})
-
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
-		fmt.Println(resp.Id)
+		printUsers([]openapi.CreatedOpenStackUser{*resp})
+		return nil
 	},
 }
 
 func init() {
 	userCmd.AddCommand(userCreateCmd)
-
-	userCreateCmd.Flags().StringVarP(&userDescription, "description", "d", "No Description", "Specify the description of the user")
-
-	userCreateCmd.Flags().StringVar(&userDefaultProject, "default-project", "", "Specify the default project of the user")
-	userCreateCmd.MarkFlagRequired("default-project")
-
-	userCreateCmd.Flags().StringVarP(&userPassword, "password", "p", "", "Specify the password of the user")
-	userCreateCmd.MarkFlagRequired("password")
+	userCreateCmd.Flags().StringVarP(&userDescription, "description", "d", "", "Description of the user (defaults to the user name if not set)")
+	userCreateCmd.Flags().StringVar(&userDefaultProject, "default-project", "", "Default project of the user")
+	if err := userCreateCmd.MarkFlagRequired("default-project"); err != nil {
+		panic(err)
+	}
+	userCreateCmd.Flags().StringVarP(&userPassword, "password", "p", "", "Password of the user")
+	if err := userCreateCmd.MarkFlagRequired("password"); err != nil {
+		panic(err)
+	}
 }

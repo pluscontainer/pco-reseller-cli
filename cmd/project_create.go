@@ -5,56 +5,46 @@ package cmd
 
 import (
 	"context"
-	"fmt"
-	"os"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
 )
 
-var projectDescription string
-var projectWithDefaultNetwork bool
+var createProjectDescription string
+var createProjectWithDefaultNetwork bool
 
-// createCmd represents the create command
 var createCmd = &cobra.Command{
-	Use:   "create",
-	Short: "Create a new reseller project",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			fmt.Println("Please specify the name of the project")
-			os.Exit(1)
-		}
-
-		if len(args) > 1 {
-			fmt.Println("Please only specify the name of the project")
-			os.Exit(1)
-		}
-
+	Use:     "create [project-name]",
+	Short:   "Create a new reseller project",
+	Example: "  pco-reseller-cli project create my-project\n  pco-reseller-cli project create my-project --description \"my project\" --with-default-network",
+	Args:    cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
-
 		ctx := context.Background()
 		enabled := true
 
-		resp, err := psOsClient.CreateProject(ctx, openapi.ProjectCreate{
-			Name:                args[0],
-			Description:         projectDescription,
-			Enabled:             &enabled,
-			NetworkPreconfigure: &projectWithDefaultNetwork,
-		})
-
-		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+		description := createProjectDescription
+		if !cmd.Flags().Changed("description") {
+			description = args[0]
 		}
 
-		fmt.Println(resp.Id)
+		resp, err := psOsClient.CreateProject(ctx, openapi.ProjectCreate{
+			Name:                args[0],
+			Description:         description,
+			Enabled:             &enabled,
+			NetworkPreconfigure: &createProjectWithDefaultNetwork,
+		})
+		if err != nil {
+			return err
+		}
+
+		printProjects([]openapi.ProjectCreatedResponse{*resp})
+		return nil
 	},
 }
 
 func init() {
 	projectCmd.AddCommand(createCmd)
-
-	createCmd.Flags().StringVarP(&projectDescription, "description", "d", "No Description", "Specify the description of the project")
-
-	createCmd.Flags().BoolVar(&projectWithDefaultNetwork, "with-default-network", false, "Specify if the default network should be created (default false)")
+	createCmd.Flags().StringVarP(&createProjectDescription, "description", "d", "", "Description of the project (defaults to the project name if not set)")
+	createCmd.Flags().BoolVar(&createProjectWithDefaultNetwork, "with-default-network", false, "Preconfigure the project with a default network, router and security groups")
 }

@@ -5,40 +5,25 @@ package cmd
 
 import (
 	"context"
-	"fmt"
-	"os"
 
 	"github.com/pluscontainer/pco-reseller-cli/pkg/openapi"
 	"github.com/spf13/cobra"
 )
 
 var updateUserName, updateUserDescription, updateUserDefaultProject, updateUserPassword string
-
 var enableUser, disableUser bool
 
-// createCmd represents the create command
 var userUpdateCmd = &cobra.Command{
-	Use:   "update",
+	Use:   "update [user-id]",
 	Short: "Update a reseller user",
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			fmt.Println("Please specify the id of the user")
-			os.Exit(1)
-		}
-
-		if len(args) > 1 {
-			fmt.Println("Please only specify the id of the user")
-			os.Exit(1)
-		}
-
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		psOsClient := fetchPsOpenStackClientOrDie()
-
 		ctx := context.Background()
 
 		resp, err := psOsClient.GetUser(ctx, args[0])
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		if len(updateUserName) == 0 {
@@ -51,16 +36,11 @@ var userUpdateCmd = &cobra.Command{
 			updateUserDefaultProject = *resp.DefaultProject
 		}
 
-		var isUserEnabled bool
-
+		var isEnabled bool
 		if !enableUser && !disableUser {
-			isUserEnabled = *resp.Enabled
-		}
-		if enableUser {
-			isUserEnabled = true
-		}
-		if disableUser {
-			isUserEnabled = false
+			isEnabled = *resp.Enabled
+		} else {
+			isEnabled = enableUser
 		}
 
 		resp, err = psOsClient.UpdateUser(ctx, args[0], openapi.UpdateOpenStackUser{
@@ -68,28 +48,27 @@ var userUpdateCmd = &cobra.Command{
 			Description:    &updateUserDescription,
 			DefaultProject: &updateUserDefaultProject,
 			Password:       &updateUserPassword,
-			Enabled:        &isUserEnabled,
+			Enabled:        &isEnabled,
 		})
-
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 
 		printUsers([]openapi.CreatedOpenStackUser{*resp})
+		return nil
 	},
 }
 
 func init() {
 	userCmd.AddCommand(userUpdateCmd)
-
-	userUpdateCmd.Flags().StringVarP(&updateUserName, "name", "n", "", "Specify the name of the user")
-	userUpdateCmd.Flags().StringVarP(&updateUserDescription, "description", "d", "", "Specify the description of the user")
-	userUpdateCmd.Flags().StringVar(&updateUserDefaultProject, "default-project", "", "Specify the default project of the user")
-	userUpdateCmd.Flags().StringVarP(&updateUserPassword, "password", "p", "", "Specify the password of the user")
-	//Unfortunately the API works via PUT -> Need to specify the password everytime
-	userUpdateCmd.MarkFlagRequired("password")
-
+	userUpdateCmd.Flags().StringVarP(&updateUserName, "name", "n", "", "Update the name of the user")
+	userUpdateCmd.Flags().StringVarP(&updateUserDescription, "description", "d", "", "Update the description of the user")
+	userUpdateCmd.Flags().StringVar(&updateUserDefaultProject, "default-project", "", "Update the default project of the user")
+	userUpdateCmd.Flags().StringVarP(&updateUserPassword, "password", "p", "", "Password of the user")
+	if err := userUpdateCmd.MarkFlagRequired("password"); err != nil {
+		panic(err)
+	}
 	userUpdateCmd.Flags().BoolVar(&enableUser, "enable", false, "Enable the specified user")
 	userUpdateCmd.Flags().BoolVar(&disableUser, "disable", false, "Disable the specified user")
+	userUpdateCmd.MarkFlagsMutuallyExclusive("enable", "disable")
 }
