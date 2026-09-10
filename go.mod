@@ -4,7 +4,7 @@ go 1.26
 
 require (
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
-	github.com/oapi-codegen/runtime v1.4.1
+	github.com/oapi-codegen/runtime v1.4.2
 	github.com/sethvargo/go-password v0.3.1
 	github.com/spf13/cobra v1.10.1
 )
