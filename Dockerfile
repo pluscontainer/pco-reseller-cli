@@ -1,4 +1,4 @@
-FROM golang:1.26@sha256:68cb6d68bed024785b69195b89af7ac7a444f27791435f98647edff595aa0479 AS build
+FROM golang:1.26@sha256:37cfcca63222ec499bec5e8ad7aad52dbf7529db36d5812b8eae2f0621aa92d6 AS build
 RUN mkdir /src
 COPY ./ /src/
 WORKDIR /src
